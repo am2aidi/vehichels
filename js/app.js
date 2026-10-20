@@ -372,7 +372,7 @@
     if (btn3D) {
       btn3D.onclick = () => {
         closeAllModals();
-        scrollTo3DStudio(v.model3dType || 'hypercar');
+        scrollTo3DStudio(v);
       };
     }
   }
@@ -1055,6 +1055,18 @@
       };
     }
 
+    // Studio Vehicle Select Dropdown
+    const vehicleSelect = $('#studio-vehicle-select');
+    if (vehicleSelect) {
+      vehicleSelect.onchange = (e) => {
+        const v = getVehicleById(e.target.value);
+        if (v && AppState.studioInstance) {
+          AppState.studioInstance.loadVehicleConfig(v);
+          showToast(`Loaded 3D ${v.brand} ${v.model}`);
+        }
+      };
+    }
+
     // Zoom In & Zoom Out HUD Buttons
     $('#studio-btn-zoomin')?.addEventListener('click', () => {
       AppState.studioInstance?.zoom(-0.8);
@@ -1064,12 +1076,27 @@
     });
   }
 
-  function scrollTo3DStudio(modelType = 'real_ferrari') {
+  function scrollTo3DStudio(vehicleOrModel = 'real_ferrari') {
     const section = $('#section-3d-studio');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
-    if (AppState.studioInstance) {
+    if (!AppState.studioInstance) return;
+
+    let v = null;
+    if (typeof vehicleOrModel === 'object' && vehicleOrModel) {
+      v = vehicleOrModel;
+    } else if (typeof vehicleOrModel === 'string' && vehicleOrModel.startsWith('hn-')) {
+      v = getVehicleById(vehicleOrModel);
+    }
+
+    if (v) {
+      AppState.studioInstance.loadVehicleConfig(v);
+      const sel = $('#studio-vehicle-select');
+      if (sel) sel.value = v.id;
+      showToast(`Loaded 3D ${v.brand} ${v.model}`);
+    } else {
+      const modelType = typeof vehicleOrModel === 'string' ? vehicleOrModel : 'real_ferrari';
       AppState.studioInstance.buildVehicle(modelType);
       $$('#studio-model-selector button').forEach(b => {
         b.classList.toggle('active', b.dataset.model === modelType);
@@ -1184,10 +1211,7 @@
       const launch3DBtn = e.target.closest('[data-launch-3d]');
       if (launch3DBtn) {
         const v = getVehicleById(launch3DBtn.dataset.launch3d);
-        if (v && AppState.studioInstance) {
-          AppState.studioInstance.loadVehicleConfig(v);
-        }
-        scrollTo3DStudio(v ? v.model3dType : 'real_ferrari');
+        scrollTo3DStudio(v || 'real_ferrari');
         return;
       }
 

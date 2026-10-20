@@ -95,6 +95,36 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.studio-vehicle-dropdown {
+  background: rgba(18, 18, 24, 0.9);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 59, 74, 0.55);
+  color: #fff;
+  padding: 7px 16px;
+  border-radius: 24px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  pointer-events: auto;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  max-width: 290px;
+}
+
+.studio-vehicle-dropdown:hover,
+.studio-vehicle-dropdown:focus {
+  border-color: #ff3b4a;
+  box-shadow: 0 0 16px rgba(255, 59, 74, 0.45);
+}
+
+.studio-vehicle-dropdown option {
+  background: #101015;
+  color: #fff;
+  padding: 6px;
+}
+
 /* Quick Control Floating Actions (Top Right) */
 .studio-top-actions {
   display: flex;

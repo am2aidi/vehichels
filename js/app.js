@@ -1069,6 +1069,13 @@
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
     }
+    if (AppState.studioInstance) {
+      AppState.studioInstance.buildVehicle(modelType);
+      $$('#studio-model-selector button').forEach(b => {
+        b.classList.toggle('active', b.dataset.model === modelType);
+      });
+      showToast('Loaded 3D Configurator Studio');
+    }
   }
 
   // -------------------------------------------------------------

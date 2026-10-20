@@ -1,13 +1,12 @@
 /**
  * HURANOW MOTORS - Next-Generation Universal 3D Automotive Studio
  * Features:
- * - Real 3D Car GLTF Model (Authentic Ferrari with real aerodynamic curves, cockpit, Ferrari steering wheel, rims)
- * - Realistic 3D Archetypes for all vehicle categories (SUV, Heavy Truck, Pickup, Sedan, Motorcycle)
- * - Complete Inside Cabin / Cockpit Views for EVERY vehicle type (Driver Seat, Dashboard, High Trucker Cab, Rider POV)
- * - 360° Free Cabin Look (Drag to look in any direction inside the vehicle)
+ * - Real 3D Car GLTF Model (Authentic Ferrari with aerodynamic curves, cockpit, steering wheel, rims)
+ * - Highly Detailed 3D Models for ALL archetypes (Toyota Prado SUV, HOWO Heavy Tipper Truck, Hilux Pickup, HiAce Minibus, Moto-Taxi, Sedan)
+ * - Complete 360° Inside Cabin / Cockpit Views for EVERY vehicle type (Driver Seat, Dashboard, High Trucker Cab, Rider POV)
  * - 💥 Scramble / Explode Parts engine with 3D Tech Hotspot pins
  * - Real-Time Color Customizer (Paint, Interior Leather, Wheels, Headlights)
- * - Natural Page Scrolling: Canvas does NOT hijack mouse wheel or touch scrolling!
+ * - Natural Page Scrolling: Canvas NEVER steals mouse wheel or touch page scrolling!
  */
 
 class Huranow3DStudio {
@@ -22,8 +21,8 @@ class Huranow3DStudio {
     }
 
     this.state = {
-      modelType: 'real_ferrari', // 'real_ferrari', 'suv', 'heavy_truck', 'truck', 'sedan', 'motorcycle'
-      vehicleTitle: 'FERRARI SF90 STRADALE',
+      modelType: 'real_ferrari', // 'real_ferrari', 'suv', 'heavy_truck', 'truck', 'sedan', 'motorcycle', 'van'
+      vehicleTitle: 'REAL FERRARI SF90 STRADALE',
       viewMode: 'outside',       // 'outside', 'cockpit'
       cockpitPreset: 'driver',   // 'driver', 'dash', 'passenger', 'rear'
       isExploded: false,
@@ -38,7 +37,7 @@ class Huranow3DStudio {
       isLoadingModel: false
     };
 
-    // Camera angles
+    // Camera angles (outside orbit)
     this.orbit = {
       theta: 0.85,
       phi: 0.35,
@@ -47,50 +46,56 @@ class Huranow3DStudio {
       maxRadius: 14.0
     };
 
-    // Cockpit orientation
+    // Cockpit orientation (yaw = 0 faces forward along -Z)
     this.cockpitLook = {
-      yaw: -Math.PI / 2,
+      yaw: 0,
       pitch: -0.05,
-      fov: 78
+      fov: 76
     };
 
     // Cockpit camera presets per vehicle archetype
     this.cockpitPresets = {
       real_ferrari: {
-        driver: { pos: [-0.38, 0.95, 0.1], yaw: -Math.PI / 2, pitch: -0.06, fov: 76, label: 'Driver Cockpit' },
-        dash: { pos: [-0.35, 0.9, 0.28], yaw: -Math.PI / 2 - 0.45, pitch: -0.25, fov: 68, label: 'Ferrari Gauges' },
-        passenger: { pos: [0.38, 0.95, 0.1], yaw: -Math.PI / 2, pitch: -0.06, fov: 76, label: 'Passenger Seat' },
-        rear: { pos: [0, 1.0, -0.75], yaw: Math.PI / 2, pitch: 0.05, fov: 82, label: 'Rear Engine View' }
+        driver: { pos: [-0.48, 1.15, 0.12], yaw: 0, pitch: -0.05, fov: 75, label: 'Driver Cockpit' },
+        dash: { pos: [-0.48, 1.05, -0.1], yaw: 0, pitch: -0.25, fov: 65, label: 'Ferrari Gauges & HUD' },
+        passenger: { pos: [0.48, 1.15, 0.12], yaw: 0, pitch: -0.05, fov: 75, label: 'Passenger Seat' },
+        rear: { pos: [0, 1.25, 0.8], yaw: 0, pitch: -0.2, fov: 75, label: 'Mid-Engine V8 Deck' }
       },
       suv: {
-        driver: { pos: [-0.46, 1.45, 0.15], yaw: -Math.PI / 2, pitch: -0.06, fov: 78, label: 'High Driver Seat' },
-        dash: { pos: [-0.4, 1.35, 0.4], yaw: -Math.PI / 2 - 0.4, pitch: -0.2, fov: 70, label: 'Digital Cluster' },
-        passenger: { pos: [0.46, 1.45, 0.15], yaw: -Math.PI / 2, pitch: -0.06, fov: 78, label: 'Passenger Seat' },
-        rear: { pos: [0, 1.5, -0.85], yaw: -Math.PI / 2, pitch: 0, fov: 82, label: 'Rear 7-Seat Lounge' }
+        driver: { pos: [-0.52, 1.55, 0.25], yaw: 0, pitch: -0.06, fov: 76, label: 'High Driver Seat' },
+        dash: { pos: [-0.48, 1.45, -0.1], yaw: 0, pitch: -0.22, fov: 68, label: 'Multi-Terrain Cluster' },
+        passenger: { pos: [0.52, 1.55, 0.25], yaw: 0, pitch: -0.06, fov: 76, label: 'Passenger Seat' },
+        rear: { pos: [0, 1.6, 1.1], yaw: 0, pitch: 0, fov: 80, label: '7-Passenger Cabin' }
       },
       heavy_truck: {
-        driver: { pos: [-0.65, 2.1, 0.65], yaw: -Math.PI / 2, pitch: -0.08, fov: 82, label: 'High Trucker Cab' },
-        dash: { pos: [-0.58, 1.95, 0.95], yaw: -Math.PI / 2 - 0.5, pitch: -0.25, fov: 72, label: 'Air Brake Dash' },
-        passenger: { pos: [0.65, 2.1, 0.65], yaw: -Math.PI / 2, pitch: -0.08, fov: 82, label: 'Co-Pilot Seat' },
-        rear: { pos: [0, 2.05, -0.3], yaw: Math.PI / 2, pitch: 0, fov: 85, label: 'Sleeper Bunk Cabin' }
+        driver: { pos: [-0.65, 2.3, 0.4], yaw: 0, pitch: -0.08, fov: 82, label: 'High Trucker Cab' },
+        dash: { pos: [-0.6, 2.15, 0.05], yaw: 0, pitch: -0.28, fov: 72, label: 'Dual Air Gauges' },
+        passenger: { pos: [0.65, 2.3, 0.4], yaw: 0, pitch: -0.08, fov: 82, label: 'Co-Pilot Seat' },
+        rear: { pos: [0, 2.25, 1.0], yaw: Math.PI, pitch: 0, fov: 85, label: 'Sleeper Bunk Cabin' }
       },
       truck: {
-        driver: { pos: [-0.48, 1.4, 0.25], yaw: -Math.PI / 2, pitch: -0.06, fov: 78, label: 'Driver Cockpit' },
-        dash: { pos: [-0.42, 1.3, 0.5], yaw: -Math.PI / 2 - 0.4, pitch: -0.2, fov: 70, label: 'Center Console' },
-        passenger: { pos: [0.48, 1.4, 0.25], yaw: -Math.PI / 2, pitch: -0.06, fov: 78, label: 'Passenger Seat' },
-        rear: { pos: [0, 1.4, -0.9], yaw: Math.PI / 2, pitch: 0, fov: 84, label: 'Cargo Bed View' }
+        driver: { pos: [-0.5, 1.5, 0.2], yaw: 0, pitch: -0.06, fov: 76, label: 'Driver Cockpit' },
+        dash: { pos: [-0.45, 1.4, -0.1], yaw: 0, pitch: -0.2, fov: 68, label: '4x4 Touchscreen Console' },
+        passenger: { pos: [0.5, 1.5, 0.2], yaw: 0, pitch: -0.06, fov: 76, label: 'Passenger Seat' },
+        rear: { pos: [0, 1.5, 1.4], yaw: Math.PI, pitch: 0, fov: 82, label: 'Rear Cargo Bed View' }
+      },
+      van: {
+        driver: { pos: [-0.55, 1.6, -0.2], yaw: 0, pitch: -0.06, fov: 78, label: 'Bus Driver Seat' },
+        dash: { pos: [-0.5, 1.5, -0.45], yaw: 0, pitch: -0.25, fov: 70, label: 'Transit Instrument Cluster' },
+        passenger: { pos: [0.55, 1.6, -0.2], yaw: 0, pitch: -0.06, fov: 78, label: 'Front Co-Driver' },
+        rear: { pos: [0, 1.65, 1.2], yaw: 0, pitch: 0, fov: 82, label: '15-Passenger Cabin Rows' }
       },
       sedan: {
-        driver: { pos: [-0.42, 1.15, 0.15], yaw: -Math.PI / 2, pitch: -0.05, fov: 78, label: 'Driver Seat' },
-        dash: { pos: [-0.38, 1.05, 0.38], yaw: -Math.PI / 2 - 0.45, pitch: -0.2, fov: 68, label: 'OLED Dash Screens' },
-        passenger: { pos: [0.42, 1.15, 0.15], yaw: -Math.PI / 2, pitch: -0.05, fov: 78, label: 'Passenger Seat' },
-        rear: { pos: [0, 1.2, -0.95], yaw: -Math.PI / 2, pitch: 0, fov: 80, label: 'Executive Rear Row' }
+        driver: { pos: [-0.48, 1.2, 0.15], yaw: 0, pitch: -0.05, fov: 75, label: 'Driver Seat' },
+        dash: { pos: [-0.42, 1.1, -0.12], yaw: 0, pitch: -0.22, fov: 66, label: 'Digital Cockpit Screen' },
+        passenger: { pos: [0.48, 1.2, 0.15], yaw: 0, pitch: -0.05, fov: 75, label: 'Passenger Seat' },
+        rear: { pos: [0, 1.22, 1.05], yaw: 0, pitch: 0, fov: 78, label: 'Executive Rear Row' }
       },
       motorcycle: {
-        driver: { pos: [0, 1.32, -0.15], yaw: -Math.PI / 2, pitch: -0.12, fov: 85, label: 'Rider POV Behind Screen' },
-        dash: { pos: [0, 1.2, 0.22], yaw: -Math.PI / 2, pitch: -0.4, fov: 72, label: 'TFT Racing Cluster' },
-        passenger: { pos: [0, 1.48, -0.65], yaw: -Math.PI / 2, pitch: 0, fov: 85, label: 'Pillion Passenger' },
-        rear: { pos: [0, 1.15, -1.2], yaw: -Math.PI / 2, pitch: 0.1, fov: 85, label: 'Exhaust & Swingarm' }
+        driver: { pos: [0, 1.35, 0.3], yaw: 0, pitch: -0.15, fov: 82, label: 'Rider POV Behind Screen' },
+        dash: { pos: [0, 1.25, 0.05], yaw: 0, pitch: -0.42, fov: 70, label: 'Digital Racing Cluster' },
+        passenger: { pos: [0, 1.45, 0.75], yaw: 0, pitch: 0, fov: 82, label: 'Pillion Passenger Seat' },
+        rear: { pos: [0, 1.1, 1.2], yaw: 0, pitch: 0.1, fov: 82, label: 'Exhaust & Rear Sprocket' }
       }
     };
 
@@ -151,7 +156,7 @@ class Huranow3DStudio {
     // Hotspots Overlay Layer
     this.setupHotspotsOverlay();
 
-    // Load initial real 3D car model
+    // Load initial real 3D car model (Ferrari SF90)
     this.loadRealCarModel();
 
     // Event Bindings
@@ -166,11 +171,11 @@ class Huranow3DStudio {
     this.lights = new T.Group();
     this.scene.add(this.lights);
 
-    this.ambientLight = new T.AmbientLight(0xffffff, 0.75);
+    this.ambientLight = new T.AmbientLight(0xffffff, 0.85);
     this.lights.add(this.ambientLight);
 
     // Sun / Key light
-    this.keyLight = new T.DirectionalLight(0xffffff, 1.5);
+    this.keyLight = new T.DirectionalLight(0xffffff, 1.6);
     this.keyLight.position.set(7, 10, 6);
     this.keyLight.castShadow = true;
     this.keyLight.shadow.mapSize.width = 2048;
@@ -179,18 +184,18 @@ class Huranow3DStudio {
     this.lights.add(this.keyLight);
 
     // Rim / Backlight
-    this.rimLight = new T.DirectionalLight(0x70aaff, 1.1);
+    this.rimLight = new T.DirectionalLight(0x70aaff, 1.2);
     this.rimLight.position.set(-8, 6, -7);
     this.lights.add(this.rimLight);
 
     // Warm Fill Light
-    this.fillLight = new T.DirectionalLight(0xffeedd, 0.6);
+    this.fillLight = new T.DirectionalLight(0xffeedd, 0.7);
     this.fillLight.position.set(0, 4, 8);
     this.lights.add(this.fillLight);
 
     // Cabin Point Light
-    this.cabinLight = new T.PointLight(0xffffff, 0.45, 5.0);
-    this.cabinLight.position.set(0, 1.1, 0.1);
+    this.cabinLight = new T.PointLight(0xffffff, 0.6, 5.0);
+    this.cabinLight.position.set(0, 1.2, 0);
     this.carRoot.add(this.cabinLight);
   }
 
@@ -258,43 +263,43 @@ class Huranow3DStudio {
     this.parts = {};
 
     const dracoLoader = new window.THREE.DRACOLoader();
-    dracoLoader.setDecoderPath('assets/draco/');
+    // Use Google official CDN with CORS headers guaranteed across all origins
+    dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
 
     const loader = new window.THREE.GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
 
-    // Primary local path with fallback
-    const glbUrl = 'assets/models/ferrari.glb';
+    // Primary: jsDelivr CDN (has Access-Control-Allow-Origin: *), then local fallback
+    const cdnUrl = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/models/gltf/ferrari.glb';
+    const localUrl = 'assets/models/ferrari.glb';
 
-    loader.load(
-      glbUrl,
-      (gltf) => {
-        this.hideLoadingOverlay();
-        this.setupRealFerrariParts(gltf.scene);
-      },
-      (xhr) => {
-        if (xhr.lengthComputable) {
-          const pct = Math.round((xhr.loaded / xhr.total) * 100);
-          this.showLoadingOverlay(`Loading Real 3D Car... ${pct}%`);
-        }
-      },
-      (error) => {
-        console.warn('Local GLB failed, trying fallback CDN...', error);
-        loader.load(
-          'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/models/gltf/ferrari.glb',
-          (gltf) => {
-            this.hideLoadingOverlay();
-            this.setupRealFerrariParts(gltf.scene);
-          },
-          null,
-          (err2) => {
-            console.error('All GLB loads failed, building high-grade procedural car:', err2);
+    const tryLoad = (url, isFallback = false) => {
+      loader.load(
+        url,
+        (gltf) => {
+          this.hideLoadingOverlay();
+          this.setupRealFerrariParts(gltf.scene);
+        },
+        (xhr) => {
+          if (xhr.lengthComputable) {
+            const pct = Math.round((xhr.loaded / xhr.total) * 100);
+            this.showLoadingOverlay(`Loading Real 3D Car... ${pct}%`);
+          }
+        },
+        (err) => {
+          console.warn(`Load failed from ${url}:`, err);
+          if (!isFallback) {
+            tryLoad(localUrl, true);
+          } else {
+            console.error('All GLB loads failed, building high-grade procedural car:', err);
             this.hideLoadingOverlay();
             this.buildHighGradeProceduralCar();
           }
-        );
-      }
-    );
+        }
+      );
+    };
+
+    tryLoad(cdnUrl);
   }
 
   setupRealFerrariParts(scene) {
@@ -310,15 +315,15 @@ class Huranow3DStudio {
     this.realMaterials = {
       body: new T.MeshPhysicalMaterial({
         color: new T.Color(this.state.paintColor),
-        metalness: 0.65,
-        roughness: 0.22,
+        metalness: 0.68,
+        roughness: 0.2,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.1
+        clearcoatRoughness: 0.08
       }),
       rims: new T.MeshStandardMaterial({
         color: 0xd8dde4,
-        metalness: 0.9,
-        roughness: 0.2
+        metalness: 0.92,
+        roughness: 0.18
       }),
       interior: new T.MeshStandardMaterial({
         color: new T.Color(this.state.interiorColor),
@@ -336,17 +341,7 @@ class Huranow3DStudio {
       })
     };
 
-    // Subpart groupings for scramble & inspection
-    const bodyGroup = new T.Group();
-    const wheelsGroup = {
-      fl: new T.Group(),
-      fr: new T.Group(),
-      rl: new T.Group(),
-      rr: new T.Group()
-    };
-    const interiorGroup = new T.Group();
-
-    // Traverse real Ferrari nodes
+    // Traverse real Ferrari nodes and style materials
     scene.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
@@ -356,7 +351,7 @@ class Huranow3DStudio {
 
         if (name.includes('body')) {
           child.material = this.realMaterials.body;
-        } else if (name.includes('rim')) {
+        } else if (name.includes('rim') || name.includes('wheel')) {
           child.material = this.realMaterials.rims;
         } else if (name.includes('leather') || name.includes('interior') || name.includes('steering')) {
           child.material = this.realMaterials.interior;
@@ -387,36 +382,36 @@ class Huranow3DStudio {
       chassis: {
         group: scene,
         rest: { x: 0, y: 0, z: 0, rotX: 0, rotY: 0, rotZ: 0 },
-        target: { x: 0, y: 0.4, z: 0, rotX: 0, rotY: 0, rotZ: 0 }
+        target: { x: 0, y: 0.45, z: 0, rotX: 0, rotY: 0, rotZ: 0 }
       }
     };
 
     if (wheelFL) {
       this.parts.wheelFL = {
         group: wheelFL,
-        rest: { x: wheelFL.position.x, y: wheelFL.position.y, z: wheelFL.position.z, rotX: 0, rotY: 0, rotZ: 0 },
-        target: { x: wheelFL.position.x - 1.0, y: wheelFL.position.y, z: wheelFL.position.z, rotX: 0, rotY: 0, rotZ: 0 }
+        rest: { x: wheelFL.position.x, y: wheelFL.position.y, z: wheelFL.position.z },
+        target: { x: wheelFL.position.x - 1.1, y: wheelFL.position.y, z: wheelFL.position.z }
       };
     }
     if (wheelFR) {
       this.parts.wheelFR = {
         group: wheelFR,
-        rest: { x: wheelFR.position.x, y: wheelFR.position.y, z: wheelFR.position.z, rotX: 0, rotY: 0, rotZ: 0 },
-        target: { x: wheelFR.position.x + 1.0, y: wheelFR.position.y, z: wheelFR.position.z, rotX: 0, rotY: 0, rotZ: 0 }
+        rest: { x: wheelFR.position.x, y: wheelFR.position.y, z: wheelFR.position.z },
+        target: { x: wheelFR.position.x + 1.1, y: wheelFR.position.y, z: wheelFR.position.z }
       };
     }
     if (wheelRL) {
       this.parts.wheelRL = {
         group: wheelRL,
-        rest: { x: wheelRL.position.x, y: wheelRL.position.y, z: wheelRL.position.z, rotX: 0, rotY: 0, rotZ: 0 },
-        target: { x: wheelRL.position.x - 1.0, y: wheelRL.position.y, z: wheelRL.position.z, rotX: 0, rotY: 0, rotZ: 0 }
+        rest: { x: wheelRL.position.x, y: wheelRL.position.y, z: wheelRL.position.z },
+        target: { x: wheelRL.position.x - 1.1, y: wheelRL.position.y, z: wheelRL.position.z }
       };
     }
     if (wheelRR) {
       this.parts.wheelRR = {
         group: wheelRR,
-        rest: { x: wheelRR.position.x, y: wheelRR.position.y, z: wheelRR.position.z, rotX: 0, rotY: 0, rotZ: 0 },
-        target: { x: wheelRR.position.x + 1.0, y: wheelRR.position.y, z: wheelRR.position.z, rotX: 0, rotY: 0, rotZ: 0 }
+        rest: { x: wheelRR.position.x, y: wheelRR.position.y, z: wheelRR.position.z },
+        target: { x: wheelRR.position.x + 1.1, y: wheelRR.position.y, z: wheelRR.position.z }
       };
     }
 
@@ -449,16 +444,14 @@ class Huranow3DStudio {
   }
 
   // ========================================================
-  // HIGH-GRADE PROCEDURAL CAR (Fallback / Other Archetypes)
+  // HIGH-GRADE REALISTIC PROCEDURAL VEHICLES
   // ========================================================
   buildHighGradeProceduralCar() {
-    const T = this.THREE;
-    // Build smooth curved geometry with Lathe/Extrude
-    this.buildVehicle(this.state.modelType || 'hypercar');
+    this.buildVehicle(this.state.modelType || 'suv');
   }
 
   buildVehicle(type = 'real_ferrari') {
-    if (type === 'real_ferrari' || type === 'hypercar') {
+    if (type === 'real_ferrari') {
       this.loadRealCarModel();
       return;
     }
@@ -481,35 +474,52 @@ class Huranow3DStudio {
     this.materials = {
       paint: new T.MeshPhysicalMaterial({
         color: new T.Color(this.state.paintColor),
-        metalness: 0.62,
-        roughness: 0.2,
-        clearcoat: 0.95
+        metalness: 0.65,
+        roughness: 0.22,
+        clearcoat: 0.95,
+        clearcoatRoughness: 0.08
       }),
       carbon: new T.MeshStandardMaterial({ color: 0x141416, roughness: 0.45, metalness: 0.8 }),
-      glass: new T.MeshPhysicalMaterial({ color: 0x7eb3d4, transmission: 0.88, transparent: true, opacity: 0.38 }),
+      glass: new T.MeshPhysicalMaterial({ color: 0x90caf9, transmission: 0.88, transparent: true, opacity: 0.42, roughness: 0.08 }),
       interior: new T.MeshStandardMaterial({ color: new T.Color(this.state.interiorColor), roughness: 0.85 }),
-      chrome: new T.MeshStandardMaterial({ color: 0xd8dde4, metalness: 0.95, roughness: 0.1 }),
-      tireRubber: new T.MeshStandardMaterial({ color: 0x111113, roughness: 0.92 }),
-      caliper: new T.MeshStandardMaterial({ color: new T.Color(this.state.caliperColor), roughness: 0.3 }),
-      engineBlock: new T.MeshStandardMaterial({ color: 0x282a30, metalness: 0.85 }),
-      headlightEmissive: new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2.2 }),
-      taillightEmissive: new T.MeshStandardMaterial({ color: 0xff0020, emissive: 0xff0020, emissiveIntensity: 2.5 }),
-      screenEmissive: new T.MeshStandardMaterial({ color: 0x081525, emissive: 0x0d72ff, emissiveIntensity: 1.1 })
+      chrome: new T.MeshStandardMaterial({ color: 0xe5e7eb, metalness: 0.95, roughness: 0.1 }),
+      tireRubber: new T.MeshStandardMaterial({ color: 0x151518, roughness: 0.92 }),
+      caliper: new T.MeshStandardMaterial({ color: 0xef4444, roughness: 0.3, metalness: 0.5 }),
+      brakeRotor: new T.MeshStandardMaterial({ color: 0x9ca3af, metalness: 0.9, roughness: 0.25 }),
+      engineBlock: new T.MeshStandardMaterial({ color: 0x374151, metalness: 0.85, roughness: 0.35 }),
+      headlightEmissive: new T.MeshStandardMaterial({ color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 2.5 }),
+      taillightEmissive: new T.MeshStandardMaterial({ color: 0xff0020, emissive: 0xff0020, emissiveIntensity: 2.8 }),
+      screenEmissive: new T.MeshStandardMaterial({ color: 0x081525, emissive: 0x00f0ff, emissiveIntensity: 1.4 })
     };
 
     if (type === 'heavy_truck') {
-      this.buildHeavyTruckProcedural(T);
+      this.buildHeavyTruckDetailed(T);
     } else if (type === 'motorcycle') {
-      this.buildSuperbikeProcedural(T);
+      this.buildMotorcycleDetailed(T);
     } else if (type === 'truck') {
-      this.buildPickupTruckProcedural(T);
-    } else if (type === 'suv' || type === 'van') {
-      this.buildSuvProcedural(T, type === 'van');
+      this.buildPickupDetailed(T);
+    } else if (type === 'van') {
+      this.buildVanDetailed(T);
+    } else if (type === 'suv') {
+      this.buildSuvDetailed(T);
     } else {
-      this.buildSedanProcedural(T);
+      this.buildSedanDetailed(T);
     }
 
     this.updateHotspotDefinitions(type);
+
+    const titleEl = document.querySelector('.studio-logo-text');
+    if (titleEl) {
+      const titles = {
+        suv: 'HURANOW 3D · TOYOTA PRADO TXL / SUV 4X4',
+        heavy_truck: 'HURANOW 3D · SINOTRUK HOWO 371 HEAVY TIPPER',
+        truck: 'HURANOW 3D · TOYOTA HILUX DOUBLE CAB 4X4',
+        van: 'HURANOW 3D · TOYOTA HIACE TWEGERANE / COASTER',
+        motorcycle: 'HURANOW 3D · BAJAJ BOXER 150 / AMPERSAND',
+        sedan: 'HURANOW 3D · EXECUTIVE SEDAN / FIELDER'
+      };
+      titleEl.textContent = titles[type] || 'HURANOW 3D STUDIO';
+    }
   }
 
   createSubPart(name, group, restPos, explodeDelta) {
@@ -517,199 +527,467 @@ class Huranow3DStudio {
     this.carRoot.add(group);
     this.parts[name] = {
       group,
-      rest: { x: restPos.x, y: restPos.y, z: restPos.z, rotX: 0, rotY: 0, rotZ: 0 },
+      rest: { x: restPos.x, y: restPos.y, z: restPos.z },
       target: {
         x: restPos.x + (explodeDelta.x || 0),
         y: restPos.y + (explodeDelta.y || 0),
-        z: restPos.z + (explodeDelta.z || 0),
-        rotX: explodeDelta.rotX || 0,
-        rotY: explodeDelta.rotY || 0,
-        rotZ: explodeDelta.rotZ || 0
+        z: restPos.z + (explodeDelta.z || 0)
       }
     };
   }
 
-  buildHeavyTruckProcedural(T) {
-    this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
-    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.6, z: 1.4, rotX: 0.4 });
-    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 2.2, z: 0 });
-    this.createSubPart('doorL', new T.Group(), { x: 0, y: 0, z: 0 }, { x: -1.6, y: 1.2, z: 0.6, rotY: 0.6 });
-    this.createSubPart('doorR', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 1.6, y: 1.2, z: 0.6, rotY: -0.6 });
-    this.createSubPart('spoiler', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.5, z: -1.8 });
-    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.8, z: 0.8 });
-    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 0 });
-    this.createSubPart('wheelFL', new T.Group(), { x: -1.45, y: 0.55, z: 1.5 }, { x: -2.4, y: 0.55, z: 1.5 });
-    this.createSubPart('wheelFR', new T.Group(), { x: 1.45, y: 0.55, z: 1.5 }, { x: 2.4, y: 0.55, z: 1.5 });
-    this.createSubPart('wheelRL', new T.Group(), { x: -1.45, y: 0.55, z: -1.2 }, { x: -2.5, y: 0.55, z: -1.2 });
-    this.createSubPart('wheelRR', new T.Group(), { x: 1.45, y: 0.55, z: -1.2 }, { x: 2.5, y: 0.55, z: -1.2 });
+  // Realistic wheel with tire, 5-spoke alloy rim, brake disc, and red caliper
+  buildRealisticWheel(T, radius = 0.42, width = 0.28, isHeavy = false) {
+    const wheelGroup = new T.Group();
 
-    const cab = new T.Mesh(new T.BoxGeometry(2.35, 2.1, 2.2), this.materials.paint);
-    cab.position.set(0, 2.05, 0.6);
-    const windshield = new T.Mesh(new T.BoxGeometry(2.1, 0.95, 0.08), this.materials.glass);
-    windshield.position.set(0, 2.45, 1.72);
-    this.parts.hood.group.add(cab, windshield);
+    // 1. Treaded Rubber Tire
+    const tireGeo = new T.CylinderGeometry(radius, radius, width, 32);
+    const tire = new T.Mesh(tireGeo, this.materials.tireRubber);
+    tire.rotation.z = Math.PI / 2;
+    tire.castShadow = true;
+    wheelGroup.add(tire);
 
-    // Chrome stacks
-    [-1.05, 1.05].forEach(x => {
-      const stack = new T.Mesh(new T.CylinderGeometry(0.09, 0.09, 2.6, 20), this.materials.chrome);
-      stack.position.set(x, 2.4, -0.5);
-      this.parts.spoiler.group.add(stack);
-    });
+    // 2. Alloy Rim Barrel
+    const rimRadius = radius * (isHeavy ? 0.6 : 0.72);
+    const rimGeo = new T.CylinderGeometry(rimRadius, rimRadius, width + 0.02, 28);
+    const rim = new T.Mesh(rimGeo, this.materials.chrome);
+    rim.rotation.z = Math.PI / 2;
+    wheelGroup.add(rim);
 
-    const truckerSeat = new T.Mesh(new T.BoxGeometry(0.55, 0.95, 0.55), this.materials.interior);
-    truckerSeat.position.set(-0.65, 1.9, 0.65);
-    const bigWheel = new T.Mesh(new T.TorusGeometry(0.24, 0.03, 12, 32), this.materials.carbon);
-    bigWheel.position.set(-0.65, 2.05, 1.25);
-    bigWheel.rotation.x = -0.45;
-    this.parts.cockpit.group.add(truckerSeat, bigWheel);
+    // 3. 5-Spoke Alloy Pattern
+    const spokeCount = isHeavy ? 8 : 5;
+    for (let i = 0; i < spokeCount; i++) {
+      const angle = (i / spokeCount) * Math.PI * 2;
+      const spoke = new T.Mesh(new T.BoxGeometry(0.04, rimRadius * 0.85, 0.03), this.materials.chrome);
+      spoke.position.set(0.01, Math.sin(angle) * (rimRadius * 0.45), Math.cos(angle) * (rimRadius * 0.45));
+      spoke.rotation.x = angle;
+      wheelGroup.add(spoke);
+    }
 
-    this.buildWheelsSet(T, 0.54, 0.42);
+    // 4. Center Hub Nut
+    const centerCap = new T.Mesh(new T.CylinderGeometry(rimRadius * 0.22, rimRadius * 0.22, width + 0.04, 16), this.materials.carbon);
+    centerCap.rotation.z = Math.PI / 2;
+    wheelGroup.add(centerCap);
+
+    // 5. Disc Brake Rotor
+    const disc = new T.Mesh(new T.CylinderGeometry(rimRadius * 0.75, rimRadius * 0.75, 0.02, 24), this.materials.brakeRotor);
+    disc.rotation.z = Math.PI / 2;
+    disc.position.x = -0.04;
+    wheelGroup.add(disc);
+
+    // 6. Red Brake Caliper
+    const caliper = new T.Mesh(new T.BoxGeometry(0.08, rimRadius * 0.4, 0.12), this.materials.caliper);
+    caliper.position.set(-0.04, rimRadius * 0.45, 0);
+    wheelGroup.add(caliper);
+
+    return wheelGroup;
   }
 
-  buildSuperbikeProcedural(T) {
-    this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
-    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.9, z: 1.2, rotX: 0.3 });
-    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 0 });
-    this.createSubPart('doorL', new T.Group(), { x: 0, y: 0, z: 0 }, { x: -0.8, y: 0.6, z: 0.2 });
-    this.createSubPart('doorR', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0.8, y: 0.6, z: 0.2 });
-    this.createSubPart('spoiler', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.8, z: -1.2 });
-    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.4, z: -0.1 });
-    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.6, z: 0 });
-    this.createSubPart('wheelFL', new T.Group(), { x: 0, y: 0.38, z: 1.35 }, { x: 0, y: 0.38, z: 2.2 });
-    this.createSubPart('wheelFR', new T.Group(), { x: 0, y: 0.38, z: 1.35 }, { x: 0, y: 0.38, z: 2.2 });
-    this.createSubPart('wheelRL', new T.Group(), { x: 0, y: 0.38, z: -1.25 }, { x: 0, y: 0.38, z: -2.2 });
-    this.createSubPart('wheelRR', new T.Group(), { x: 0, y: 0.38, z: -1.25 }, { x: 0, y: 0.38, z: -2.2 });
+  // Realistic Cockpit Cabin Interior
+  buildInteriorCabin(T, type = 'suv') {
+    const interiorGroup = new T.Group();
 
-    const nose = new T.Mesh(new T.ConeGeometry(0.32, 0.75, 16), this.materials.paint);
-    nose.rotation.x = -Math.PI / 2;
-    nose.position.set(0, 0.95, 1.15);
-    const screen = new T.Mesh(new T.BoxGeometry(0.38, 0.32, 0.04), this.materials.glass);
-    screen.position.set(0, 1.25, 0.9);
-    screen.rotation.x = -0.4;
-    this.parts.hood.group.add(nose, screen);
+    // Dashboard
+    const dash = new T.Mesh(new T.BoxGeometry(1.7, 0.35, 0.55), this.materials.interior);
+    dash.position.set(0, 1.25, -0.25);
+    interiorGroup.add(dash);
 
-    const bar = new T.Mesh(new T.CylinderGeometry(0.02, 0.02, 0.65, 12), this.materials.chrome);
-    bar.rotation.z = Math.PI / 2;
-    bar.position.set(0, 1.12, 0.65);
-    const tft = new T.Mesh(new T.BoxGeometry(0.18, 0.12, 0.02), this.materials.screenEmissive);
-    tft.position.set(0, 1.18, 0.72);
-    tft.rotation.x = -0.3;
-    this.parts.cockpit.group.add(bar, tft);
+    // Instrument Cluster Screen
+    const cluster = new T.Mesh(new T.BoxGeometry(0.42, 0.18, 0.02), this.materials.screenEmissive);
+    cluster.position.set(-0.48, 1.35, -0.08);
+    interiorGroup.add(cluster);
 
-    const saddle = new T.Mesh(new T.BoxGeometry(0.34, 0.1, 0.45), this.materials.interior);
-    saddle.position.set(0, 0.95, -0.35);
-    this.parts.spoiler.group.add(saddle);
+    // Center Infotainment Navigation Screen
+    const navScreen = new T.Mesh(new T.BoxGeometry(0.38, 0.24, 0.02), this.materials.screenEmissive);
+    navScreen.position.set(0, 1.28, -0.06);
+    interiorGroup.add(navScreen);
 
-    this.parts.wheelFL.group.add(this.buildSingleWheel(T, 0.36, 0.14));
-    this.parts.wheelRL.group.add(this.buildSingleWheel(T, 0.38, 0.22));
+    // Steering Column & 3D Wheel
+    const column = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 0.35, 12), this.materials.carbon);
+    column.rotation.x = -0.4;
+    column.position.set(-0.48, 1.25, 0.02);
+    interiorGroup.add(column);
+
+    const wheelRadius = type === 'heavy_truck' ? 0.28 : 0.19;
+    const steeringWheel = new T.Mesh(new T.TorusGeometry(wheelRadius, 0.022, 12, 32), this.materials.interior);
+    steeringWheel.position.set(-0.48, 1.35, 0.12);
+    steeringWheel.rotation.x = type === 'heavy_truck' ? -0.85 : -0.4;
+    interiorGroup.add(steeringWheel);
+
+    // Center Console & Shifter
+    const console = new T.Mesh(new T.BoxGeometry(0.35, 0.3, 0.9), this.materials.interior);
+    console.position.set(0, 0.95, 0.35);
+    const shifter = new T.Mesh(new T.CylinderGeometry(0.015, 0.015, 0.18, 10), this.materials.chrome);
+    shifter.position.set(0, 1.15, 0.25);
+    interiorGroup.add(console, shifter);
+
+    // Front Contoured Bucket Seats (Driver & Passenger)
+    const buildSeat = (x) => {
+      const g = new T.Group();
+      const seatBottom = new T.Mesh(new T.BoxGeometry(0.55, 0.16, 0.55), this.materials.interior);
+      const seatBack = new T.Mesh(new T.BoxGeometry(0.52, 0.65, 0.14), this.materials.interior);
+      seatBack.position.set(0, 0.35, 0.22);
+      seatBack.rotation.x = -0.15;
+      const headrest = new T.Mesh(new T.BoxGeometry(0.26, 0.2, 0.1), this.materials.interior);
+      headrest.position.set(0, 0.74, 0.27);
+      g.add(seatBottom, seatBack, headrest);
+      g.position.set(x, 0.95, 0.35);
+      return g;
+    };
+    interiorGroup.add(buildSeat(-0.52));
+    interiorGroup.add(buildSeat(0.52));
+
+    // Rear Bench Seat
+    if (type !== 'motorcycle') {
+      const rearBench = new T.Mesh(new T.BoxGeometry(1.65, 0.16, 0.5), this.materials.interior);
+      rearBench.position.set(0, 0.98, 1.2);
+      const rearBack = new T.Mesh(new T.BoxGeometry(1.62, 0.6, 0.14), this.materials.interior);
+      rearBack.position.set(0, 1.3, 1.42);
+      rearBack.rotation.x = -0.12;
+      interiorGroup.add(rearBench, rearBack);
+    }
+
+    return interiorGroup;
   }
 
-  buildPickupTruckProcedural(T) {
+  // 1. TOYOTA PRADO / RAV4 (SUV 4X4)
+  buildSuvDetailed(T) {
     this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
-    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 1.5, rotX: 0.3 });
-    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 2.0, z: 0 });
-    this.createSubPart('doorL', new T.Group(), { x: 0, y: 0, z: 0 }, { x: -1.5, y: 1.1, z: 0.2, rotY: 0.4 });
-    this.createSubPart('doorR', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 1.5, y: 1.1, z: 0.2, rotY: -0.4 });
-    this.createSubPart('spoiler', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.8, z: -1.8, rotX: 0.5 });
-    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.5, z: 1.2 });
-    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.9, z: 0 });
-    this.createSubPart('wheelFL', new T.Group(), { x: -1.48, y: 0.48, z: 1.5 }, { x: -2.4, y: 0.48, z: 1.5 });
-    this.createSubPart('wheelFR', new T.Group(), { x: 1.48, y: 0.48, z: 1.5 }, { x: 2.4, y: 0.48, z: 1.5 });
-    this.createSubPart('wheelRL', new T.Group(), { x: -1.48, y: 0.48, z: -1.4 }, { x: -2.4, y: 0.48, z: -1.4 });
-    this.createSubPart('wheelRR', new T.Group(), { x: 1.48, y: 0.48, z: -1.4 }, { x: 2.4, y: 0.48, z: -1.4 });
+    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: -1.2, rotX: -0.35 });
+    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.8, z: 0 });
+    this.createSubPart('doors', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.8, z: 0 });
+    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.5, z: -1.1 });
+    this.createSubPart('interior', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.5, z: 0 });
+    this.createSubPart('wheelFL', new T.Group(), { x: -1.02, y: 0.52, z: -1.45 }, { x: -1.8, y: 0.52, z: -1.45 });
+    this.createSubPart('wheelFR', new T.Group(), { x: 1.02, y: 0.52, z: -1.45 }, { x: 1.8, y: 0.52, z: -1.45 });
+    this.createSubPart('wheelRL', new T.Group(), { x: -1.02, y: 0.52, z: 1.45 }, { x: -1.8, y: 0.52, z: 1.45 });
+    this.createSubPart('wheelRR', new T.Group(), { x: 1.02, y: 0.52, z: 1.45 }, { x: 1.8, y: 0.52, z: 1.45 });
 
-    const base = new T.Mesh(new T.BoxGeometry(2.1, 0.45, 4.8), this.materials.carbon);
-    base.position.set(0, 0.55, 0);
-    this.parts.chassis.group.add(base);
+    // Lower Chassis & Running Boards
+    const lowerBody = new T.Mesh(new T.BoxGeometry(2.0, 0.55, 4.5), this.materials.paint);
+    lowerBody.position.set(0, 0.78, 0);
+    const runningBoardL = new T.Mesh(new T.BoxGeometry(0.12, 0.05, 2.4), this.materials.carbon);
+    runningBoardL.position.set(-1.08, 0.48, 0.1);
+    const runningBoardR = new T.Mesh(new T.BoxGeometry(0.12, 0.05, 2.4), this.materials.carbon);
+    runningBoardR.position.set(1.08, 0.48, 0.1);
+    this.parts.chassis.group.add(lowerBody, runningBoardL, runningBoardR);
 
-    const hood = new T.Mesh(new T.BoxGeometry(2.0, 0.4, 1.4), this.materials.paint);
-    hood.position.set(0, 1.05, 1.5);
+    // Front Bumper, Skid Plate & Chrome Grille
+    const frontGrille = new T.Mesh(new T.BoxGeometry(1.2, 0.38, 0.08), this.materials.chrome);
+    frontGrille.position.set(0, 0.95, -2.26);
+    const skidPlate = new T.Mesh(new T.BoxGeometry(0.9, 0.15, 0.4), this.materials.chrome);
+    skidPlate.position.set(0, 0.45, -2.1);
+    this.parts.chassis.group.add(frontGrille, skidPlate);
+
+    // LED Projector Headlights
+    const hlL = new T.Mesh(new T.BoxGeometry(0.38, 0.16, 0.1), this.materials.headlightEmissive);
+    hlL.position.set(-0.76, 0.98, -2.24);
+    const hlR = new T.Mesh(new T.BoxGeometry(0.38, 0.16, 0.1), this.materials.headlightEmissive);
+    hlR.position.set(0.76, 0.98, -2.24);
+    this.parts.chassis.group.add(hlL, hlR);
+
+    // Rear LED Taillights & Spare Wheel on Tailgate
+    const tlL = new T.Mesh(new T.BoxGeometry(0.32, 0.4, 0.08), this.materials.taillightEmissive);
+    tlL.position.set(-0.84, 1.25, 2.26);
+    const tlR = new T.Mesh(new T.BoxGeometry(0.32, 0.4, 0.08), this.materials.taillightEmissive);
+    tlR.position.set(0.84, 1.25, 2.26);
+    const spareTire = new T.Mesh(new T.CylinderGeometry(0.42, 0.42, 0.22, 28), this.materials.carbon);
+    spareTire.rotation.x = Math.PI / 2;
+    spareTire.position.set(0, 1.15, 2.34);
+    this.parts.chassis.group.add(tlL, tlR, spareTire);
+
+    // Aerodynamic Hood
+    const hood = new T.Mesh(new T.BoxGeometry(1.88, 0.12, 1.55), this.materials.paint);
+    hood.position.set(0, 1.12, -1.45);
     this.parts.hood.group.add(hood);
 
-    const cab = new T.Mesh(new T.BoxGeometry(1.95, 0.9, 1.8), this.materials.paint);
-    cab.position.set(0, 1.5, 0.2);
-    this.parts.roof.group.add(cab);
+    // Roof & Glass Cabin with Roof Rails
+    const cabinGlass = new T.Mesh(new T.BoxGeometry(1.82, 0.72, 2.65), this.materials.glass);
+    cabinGlass.position.set(0, 1.55, 0.4);
+    const roofPanel = new T.Mesh(new T.BoxGeometry(1.85, 0.08, 2.5), this.materials.paint);
+    roofPanel.position.set(0, 1.94, 0.45);
+    const railL = new T.Mesh(new T.CylinderGeometry(0.02, 0.02, 2.3, 10), this.materials.chrome);
+    railL.rotation.x = Math.PI / 2;
+    railL.position.set(-0.82, 2.02, 0.45);
+    const railR = new T.Mesh(new T.CylinderGeometry(0.02, 0.02, 2.3, 10), this.materials.chrome);
+    railR.rotation.x = Math.PI / 2;
+    railR.position.set(0.82, 2.02, 0.45);
+    this.parts.roof.group.add(cabinGlass, roofPanel, railL, railR);
 
-    this.buildWheelsSet(T, 0.46, 0.36);
+    // Engine Block
+    const engine = new T.Mesh(new T.BoxGeometry(0.85, 0.55, 0.85), this.materials.engineBlock);
+    engine.position.set(0, 0.82, -1.35);
+    this.parts.engine.group.add(engine);
+
+    // Full 3D Interior Cabin
+    this.parts.interior.group.add(this.buildInteriorCabin(T, 'suv'));
+
+    // 4 Realistic Wheels
+    this.parts.wheelFL.group.add(this.buildRealisticWheel(T, 0.45, 0.28));
+    this.parts.wheelFR.group.add(this.buildRealisticWheel(T, 0.45, 0.28));
+    this.parts.wheelRL.group.add(this.buildRealisticWheel(T, 0.45, 0.28));
+    this.parts.wheelRR.group.add(this.buildRealisticWheel(T, 0.45, 0.28));
   }
 
-  buildSuvProcedural(T, isVan) {
+  // 2. SINOTRUK HOWO 371 (HEAVY COMMERCIAL TIPPER DUMP TRUCK)
+  buildHeavyTruckDetailed(T) {
     this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
-    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 1.4, rotX: 0.3 });
-    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 2.1, z: 0 });
-    this.createSubPart('doorL', new T.Group(), { x: 0, y: 0, z: 0 }, { x: -1.5, y: 1.2, z: 0.1, rotY: 0.5 });
-    this.createSubPart('doorR', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 1.5, y: 1.2, z: 0.1, rotY: -0.5 });
-    this.createSubPart('spoiler', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: -1.6 });
-    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.6, z: 1.1 });
-    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.9, z: 0 });
-    this.createSubPart('wheelFL', new T.Group(), { x: -1.45, y: 0.45, z: 1.4 }, { x: -2.3, y: 0.45, z: 1.4 });
-    this.createSubPart('wheelFR', new T.Group(), { x: 1.45, y: 0.45, z: 1.4 }, { x: 2.3, y: 0.45, z: 1.4 });
-    this.createSubPart('wheelRL', new T.Group(), { x: -1.45, y: 0.45, z: -1.35 }, { x: -2.3, y: 0.45, z: -1.35 });
-    this.createSubPart('wheelRR', new T.Group(), { x: 1.45, y: 0.45, z: -1.35 }, { x: 2.3, y: 0.45, z: -1.35 });
+    this.createSubPart('cab', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.5, z: -1.2, rotX: -0.25 });
+    this.createSubPart('dumpbed', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.8, z: 1.4, rotX: 0.45 });
+    this.createSubPart('hydraulic', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 0.1 });
+    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.4, z: -0.6 });
+    this.createSubPart('interior', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: -1.1 });
+    this.createSubPart('wheelFL', new T.Group(), { x: -1.18, y: 0.58, z: -1.6 }, { x: -2.0, y: 0.58, z: -1.6 });
+    this.createSubPart('wheelFR', new T.Group(), { x: 1.18, y: 0.58, z: -1.6 }, { x: 2.0, y: 0.58, z: -1.6 });
+    this.createSubPart('wheelRL', new T.Group(), { x: -1.18, y: 0.58, z: 1.1 }, { x: -2.0, y: 0.58, z: 1.1 });
+    this.createSubPart('wheelRR', new T.Group(), { x: 1.18, y: 0.58, z: 1.1 }, { x: 2.0, y: 0.58, z: 1.1 });
 
-    const body = new T.Mesh(new T.BoxGeometry(2.1, 0.9, 4.4), this.materials.paint);
+    // Heavy Double Rail Frame & Fuel Tanks
+    const frameL = new T.Mesh(new T.BoxGeometry(0.18, 0.28, 5.8), this.materials.carbon);
+    frameL.position.set(-0.65, 0.72, 0.2);
+    const frameR = new T.Mesh(new T.BoxGeometry(0.18, 0.28, 5.8), this.materials.carbon);
+    frameR.position.set(0.65, 0.72, 0.2);
+    const fuelTank = new T.Mesh(new T.CylinderGeometry(0.32, 0.32, 1.4, 20), this.materials.chrome);
+    fuelTank.rotation.z = Math.PI / 2;
+    fuelTank.position.set(-0.95, 0.65, 0.1);
+    this.parts.chassis.group.add(frameL, frameR, fuelTank);
+
+    // High Cab-Over-Engine
+    const cabMesh = new T.Mesh(new T.BoxGeometry(2.35, 1.85, 1.9), this.materials.paint);
+    cabMesh.position.set(0, 1.95, -1.25);
+    const frontGrille = new T.Mesh(new T.BoxGeometry(1.6, 0.85, 0.08), this.materials.chrome);
+    frontGrille.position.set(0, 1.6, -2.22);
+    const windshield = new T.Mesh(new T.BoxGeometry(2.1, 0.75, 0.08), this.materials.glass);
+    windshield.position.set(0, 2.35, -2.18);
+    const sunVisor = new T.Mesh(new T.BoxGeometry(2.25, 0.14, 0.28), this.materials.carbon);
+    sunVisor.position.set(0, 2.78, -2.15);
+    this.parts.cab.group.add(cabMesh, frontGrille, windshield, sunVisor);
+
+    // Twin Tall Chrome Exhaust Stacks
+    [-0.95, 0.95].forEach(x => {
+      const stack = new T.Mesh(new T.CylinderGeometry(0.08, 0.08, 2.8, 16), this.materials.chrome);
+      stack.position.set(x, 2.45, -0.22);
+      this.parts.cab.group.add(stack);
+    });
+
+    // Massive 20m³ Reinforced Hydraulic Tipper Dump Bed
+    const bedFloor = new T.Mesh(new T.BoxGeometry(2.45, 0.15, 3.6), this.materials.paint);
+    bedFloor.position.set(0, 1.25, 1.2);
+    const sideL = new T.Mesh(new T.BoxGeometry(0.12, 1.2, 3.6), this.materials.paint);
+    sideL.position.set(-1.18, 1.85, 1.2);
+    const sideR = new T.Mesh(new T.BoxGeometry(0.12, 1.2, 3.6), this.materials.paint);
+    sideR.position.set(1.18, 1.85, 1.2);
+    const tailBoard = new T.Mesh(new T.BoxGeometry(2.45, 1.2, 0.12), this.materials.paint);
+    tailBoard.position.set(0, 1.85, 2.95);
+    const cabShield = new T.Mesh(new T.BoxGeometry(2.45, 1.5, 0.12), this.materials.paint);
+    cabShield.position.set(0, 2.0, -0.55);
+    this.parts.dumpbed.group.add(bedFloor, sideL, sideR, tailBoard, cabShield);
+
+    // Front Telescopic Hydraulic Cylinder Ram
+    const ram = new T.Mesh(new T.CylinderGeometry(0.12, 0.14, 1.1, 16), this.materials.chrome);
+    ram.position.set(0, 1.45, -0.4);
+    this.parts.hydraulic.group.add(ram);
+
+    // Heavy Steyr Diesel Engine Block
+    const dieselBlock = new T.Mesh(new T.BoxGeometry(1.0, 0.7, 1.2), this.materials.engineBlock);
+    dieselBlock.position.set(0, 0.95, -0.85);
+    this.parts.engine.group.add(dieselBlock);
+
+    // Trucker Interior
+    this.parts.interior.group.add(this.buildInteriorCabin(T, 'heavy_truck'));
+
+    // Heavy Duty Commercial 6-Wheel Setup
+    this.parts.wheelFL.group.add(this.buildRealisticWheel(T, 0.54, 0.38, true));
+    this.parts.wheelFR.group.add(this.buildRealisticWheel(T, 0.54, 0.38, true));
+    this.parts.wheelRL.group.add(this.buildRealisticWheel(T, 0.54, 0.42, true));
+    this.parts.wheelRR.group.add(this.buildRealisticWheel(T, 0.54, 0.42, true));
+  }
+
+  // 3. TOYOTA HILUX / ISUZU D-MAX (DOUBLE CAB PICKUP 4X4)
+  buildPickupDetailed(T) {
+    this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: -1.2, rotX: -0.35 });
+    this.createSubPart('cab', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.6, z: 0 });
+    this.createSubPart('rollbar', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.4, z: 1.1 });
+    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.4, z: -1.2 });
+    this.createSubPart('interior', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.5, z: 0 });
+    this.createSubPart('wheelFL', new T.Group(), { x: -1.02, y: 0.5, z: -1.45 }, { x: -1.8, y: 0.5, z: -1.45 });
+    this.createSubPart('wheelFR', new T.Group(), { x: 1.02, y: 0.5, z: -1.45 }, { x: 1.8, y: 0.5, z: -1.45 });
+    this.createSubPart('wheelRL', new T.Group(), { x: -1.02, y: 0.5, z: 1.45 }, { x: -1.8, y: 0.5, z: 1.45 });
+    this.createSubPart('wheelRR', new T.Group(), { x: 1.02, y: 0.5, z: 1.45 }, { x: 1.8, y: 0.5, z: 1.45 });
+
+    // Chassis & Rear Open Cargo Bed
+    const bedFloor = new T.Mesh(new T.BoxGeometry(1.95, 0.1, 1.85), this.materials.carbon);
+    bedFloor.position.set(0, 0.85, 1.45);
+    const bedSideL = new T.Mesh(new T.BoxGeometry(0.1, 0.6, 1.85), this.materials.paint);
+    bedSideL.position.set(-0.95, 1.12, 1.45);
+    const bedSideR = new T.Mesh(new T.BoxGeometry(0.1, 0.6, 1.85), this.materials.paint);
+    bedSideR.position.set(0.95, 1.12, 1.45);
+    const tailGate = new T.Mesh(new T.BoxGeometry(1.95, 0.6, 0.1), this.materials.paint);
+    tailGate.position.set(0, 1.12, 2.35);
+    this.parts.chassis.group.add(bedFloor, bedSideL, bedSideR, tailGate);
+
+    // Double Cab 5-Passenger Cabin
+    const cabBody = new T.Mesh(new T.BoxGeometry(1.95, 0.75, 2.2), this.materials.glass);
+    cabBody.position.set(0, 1.5, 0.05);
+    const cabRoof = new T.Mesh(new T.BoxGeometry(1.9, 0.08, 2.05), this.materials.paint);
+    cabRoof.position.set(0, 1.88, 0.05);
+    this.parts.cab.group.add(cabBody, cabRoof);
+
+    // Black Tubular Sports Roll Bar
+    const bar = new T.Mesh(new T.TorusGeometry(0.85, 0.04, 12, 24), this.materials.carbon);
+    bar.rotation.y = Math.PI / 2;
+    bar.position.set(0, 1.75, 0.75);
+    this.parts.rollbar.group.add(bar);
+
+    // Sculpted Hood & Engine
+    const hood = new T.Mesh(new T.BoxGeometry(1.88, 0.12, 1.45), this.materials.paint);
+    hood.position.set(0, 1.15, -1.4);
+    this.parts.hood.group.add(hood);
+
+    const engine = new T.Mesh(new T.BoxGeometry(0.8, 0.5, 0.8), this.materials.engineBlock);
+    engine.position.set(0, 0.82, -1.35);
+    this.parts.engine.group.add(engine);
+
+    // Interior & 4 All-Terrain Wheels
+    this.parts.interior.group.add(this.buildInteriorCabin(T, 'truck'));
+    this.parts.wheelFL.group.add(this.buildRealisticWheel(T, 0.46, 0.3));
+    this.parts.wheelFR.group.add(this.buildRealisticWheel(T, 0.46, 0.3));
+    this.parts.wheelRL.group.add(this.buildRealisticWheel(T, 0.46, 0.3));
+    this.parts.wheelRR.group.add(this.buildRealisticWheel(T, 0.46, 0.3));
+  }
+
+  // 4. TOYOTA HIACE TWEGERANE / COASTER (MINIBUS & BUS)
+  buildVanDetailed(T) {
+    this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.8, z: 0 });
+    this.createSubPart('doors', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 1.4, y: 0.8, z: 0.6 });
+    this.createSubPart('interior', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.6, z: 0 });
+    this.createSubPart('wheelFL', new T.Group(), { x: -0.98, y: 0.45, z: -1.6 }, { x: -1.7, y: 0.45, z: -1.6 });
+    this.createSubPart('wheelFR', new T.Group(), { x: 0.98, y: 0.45, z: -1.6 }, { x: 1.7, y: 0.45, z: -1.6 });
+    this.createSubPart('wheelRL', new T.Group(), { x: -0.98, y: 0.45, z: 1.5 }, { x: -1.7, y: 0.45, z: 1.5 });
+    this.createSubPart('wheelRR', new T.Group(), { x: 0.98, y: 0.45, z: 1.5 }, { x: 1.7, y: 0.45, z: 1.5 });
+
+    // Lower Van Body
+    const body = new T.Mesh(new T.BoxGeometry(2.05, 0.8, 4.8), this.materials.paint);
     body.position.set(0, 0.85, 0);
     this.parts.chassis.group.add(body);
 
-    const roof = new T.Mesh(new T.BoxGeometry(2.05, 0.08, 3.2), this.materials.paint);
-    roof.position.set(0, 2.45, -0.2);
-    const glass = new T.Mesh(new T.BoxGeometry(2.08, 0.9, 3.1), this.materials.glass);
-    glass.position.set(0, 1.95, -0.2);
-    this.parts.roof.group.add(roof, glass);
+    // High Roof Panoramic Windows & Passenger Van Roof
+    const glass = new T.Mesh(new T.BoxGeometry(2.02, 0.88, 4.6), this.materials.glass);
+    glass.position.set(0, 1.68, 0.05);
+    const roof = new T.Mesh(new T.BoxGeometry(2.05, 0.12, 4.75), this.materials.paint);
+    roof.position.set(0, 2.14, 0.05);
+    this.parts.roof.group.add(glass, roof);
 
-    this.buildWheelsSet(T, 0.44, 0.32);
+    // 15-Passenger Interior Cabin Rows
+    this.parts.interior.group.add(this.buildInteriorCabin(T, 'van'));
+    for (let row = 0; row < 3; row++) {
+      const zPos = 0.6 + row * 0.7;
+      const rowSeats = new T.Mesh(new T.BoxGeometry(1.6, 0.15, 0.45), this.materials.interior);
+      rowSeats.position.set(0, 0.95, zPos);
+      this.parts.interior.group.add(rowSeats);
+    }
+
+    this.parts.wheelFL.group.add(this.buildRealisticWheel(T, 0.44, 0.26));
+    this.parts.wheelFR.group.add(this.buildRealisticWheel(T, 0.44, 0.26));
+    this.parts.wheelRL.group.add(this.buildRealisticWheel(T, 0.44, 0.26));
+    this.parts.wheelRR.group.add(this.buildRealisticWheel(T, 0.44, 0.26));
   }
 
-  buildSedanProcedural(T) {
+  // 5. BAJAJ BOXER 150 / AMPERSAND E-MOTO (MOTO-TAXI)
+  buildMotorcycleDetailed(T) {
     this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
-    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: 1.4, rotX: 0.35 });
-    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 2.1, z: 0 });
-    this.createSubPart('doorL', new T.Group(), { x: 0, y: 0, z: 0 }, { x: -1.4, y: 1.1, z: 0.1, rotY: 0.4 });
-    this.createSubPart('doorR', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 1.4, y: 1.1, z: 0.1, rotY: -0.4 });
-    this.createSubPart('spoiler', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: -1.6 });
-    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.6, z: 1.1 });
-    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.8, z: 0 });
-    this.createSubPart('wheelFL', new T.Group(), { x: -1.42, y: 0.38, z: 1.4 }, { x: -2.3, y: 0.38, z: 1.4 });
-    this.createSubPart('wheelFR', new T.Group(), { x: 1.42, y: 0.38, z: 1.4 }, { x: 2.3, y: 0.38, z: 1.4 });
-    this.createSubPart('wheelRL', new T.Group(), { x: -1.42, y: 0.38, z: -1.35 }, { x: -2.3, y: 0.38, z: -1.35 });
-    this.createSubPart('wheelRR', new T.Group(), { x: 1.42, y: 0.38, z: -1.35 }, { x: 2.3, y: 0.38, z: -1.35 });
+    this.createSubPart('tank', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.9, z: -0.2 });
+    this.createSubPart('seat', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.2, z: 0.6 });
+    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: 0 });
+    this.createSubPart('cockpit', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.7, z: -0.8 });
+    this.createSubPart('wheelF', new T.Group(), { x: 0, y: 0.42, z: -1.25 }, { x: 0, y: 0.42, z: -2.1 });
+    this.createSubPart('wheelR', new T.Group(), { x: 0, y: 0.42, z: 1.2 }, { x: 0, y: 0.42, z: 2.1 });
 
-    const body = new T.Mesh(new T.BoxGeometry(2.0, 0.65, 4.4), this.materials.paint);
-    body.position.set(0, 0.75, 0);
+    // Tubular Steel Motorcycle Frame
+    const mainTube = new T.Mesh(new T.CylinderGeometry(0.035, 0.035, 1.8, 12), this.materials.carbon);
+    mainTube.rotation.x = 0.5;
+    mainTube.position.set(0, 0.85, 0);
+    const crashBar = new T.Mesh(new T.TorusGeometry(0.38, 0.025, 10, 20), this.materials.chrome);
+    crashBar.position.set(0, 0.65, -0.3);
+    this.parts.chassis.group.add(mainTube, crashBar);
+
+    // Teardrop Petrol Tank / Swappable Battery
+    const tank = new T.Mesh(new T.BoxGeometry(0.42, 0.35, 0.7), this.materials.paint);
+    tank.position.set(0, 1.05, -0.2);
+    this.parts.tank.group.add(tank);
+
+    // Long Commuter Moto-Taxi Passenger Bench Seat & Rear Carrier
+    const seat = new T.Mesh(new T.BoxGeometry(0.38, 0.14, 0.95), this.materials.interior);
+    seat.position.set(0, 1.0, 0.45);
+    const carrierRack = new T.Mesh(new T.BoxGeometry(0.36, 0.04, 0.45), this.materials.chrome);
+    carrierRack.position.set(0, 0.98, 1.05);
+    this.parts.seat.group.add(seat, carrierRack);
+
+    // Indestructible 150cc Air-Cooled Engine / Electric Motor
+    const eng = new T.Mesh(new T.BoxGeometry(0.35, 0.45, 0.45), this.materials.engineBlock);
+    eng.position.set(0, 0.65, 0);
+    const exhaustPipe = new T.Mesh(new T.CylinderGeometry(0.03, 0.04, 1.6, 12), this.materials.chrome);
+    exhaustPipe.rotation.x = Math.PI / 2;
+    exhaustPipe.position.set(0.22, 0.42, 0.4);
+    this.parts.engine.group.add(eng, exhaustPipe);
+
+    // Handlebars, Round Headlight & Mirrors
+    const handlebar = new T.Mesh(new T.CylinderGeometry(0.018, 0.018, 0.82, 12), this.materials.chrome);
+    handlebar.rotation.z = Math.PI / 2;
+    handlebar.position.set(0, 1.25, -0.7);
+    const headlight = new T.Mesh(new T.CylinderGeometry(0.12, 0.12, 0.15, 20), this.materials.headlightEmissive);
+    headlight.rotation.x = Math.PI / 2;
+    headlight.position.set(0, 1.1, -1.05);
+    const speedo = new T.Mesh(new T.CylinderGeometry(0.06, 0.06, 0.04, 16), this.materials.screenEmissive);
+    speedo.position.set(0, 1.28, -0.76);
+    this.parts.cockpit.group.add(handlebar, headlight, speedo);
+
+    // Spoked Motorcycle Wheels
+    this.parts.wheelF.group.add(this.buildRealisticWheel(T, 0.42, 0.12));
+    this.parts.wheelR.group.add(this.buildRealisticWheel(T, 0.42, 0.14));
+  }
+
+  // 6. EXECUTIVE SEDAN / COROLLA FIELDER WAGON
+  buildSedanDetailed(T) {
+    this.createSubPart('chassis', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 });
+    this.createSubPart('hood', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.1, z: -1.2, rotX: -0.35 });
+    this.createSubPart('roof', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.6, z: 0 });
+    this.createSubPart('engine', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 1.4, z: -1.2 });
+    this.createSubPart('interior', new T.Group(), { x: 0, y: 0, z: 0 }, { x: 0, y: 0.5, z: 0 });
+    this.createSubPart('wheelFL', new T.Group(), { x: -0.98, y: 0.42, z: -1.4 }, { x: -1.7, y: 0.42, z: -1.4 });
+    this.createSubPart('wheelFR', new T.Group(), { x: 0.98, y: 0.42, z: -1.4 }, { x: 1.7, y: 0.42, z: -1.4 });
+    this.createSubPart('wheelRL', new T.Group(), { x: -0.98, y: 0.42, z: 1.4 }, { x: -1.7, y: 0.42, z: 1.4 });
+    this.createSubPart('wheelRR', new T.Group(), { x: 0.98, y: 0.42, z: 1.4 }, { x: 1.7, y: 0.42, z: 1.4 });
+
+    // Lower Sedan Body
+    const body = new T.Mesh(new T.BoxGeometry(1.95, 0.55, 4.4), this.materials.paint);
+    body.position.set(0, 0.68, 0);
     this.parts.chassis.group.add(body);
 
-    const glass = new T.Mesh(new T.BoxGeometry(1.65, 0.6, 2.2), this.materials.glass);
-    glass.position.set(0, 1.25, 0.05);
-    this.parts.roof.group.add(glass);
+    // Aerodynamic Glass Cabin
+    const glass = new T.Mesh(new T.BoxGeometry(1.78, 0.6, 2.4), this.materials.glass);
+    glass.position.set(0, 1.25, 0.1);
+    const roof = new T.Mesh(new T.BoxGeometry(1.8, 0.06, 2.2), this.materials.paint);
+    roof.position.set(0, 1.56, 0.1);
+    this.parts.roof.group.add(glass, roof);
 
-    this.buildWheelsSet(T);
-  }
+    // Front Hood & Engine
+    const hood = new T.Mesh(new T.BoxGeometry(1.85, 0.1, 1.4), this.materials.paint);
+    hood.position.set(0, 0.96, -1.35);
+    this.parts.hood.group.add(hood);
 
-  buildWheelsSet(T, radius = 0.39, width = 0.28) {
-    const buildW = () => {
-      const g = new T.Group();
-      const tire = new T.Mesh(new T.CylinderGeometry(radius, radius, width, 32), this.materials.tireRubber);
-      tire.rotation.z = Math.PI / 2;
-      const rim = new T.Mesh(new T.CylinderGeometry(radius * 0.7, radius * 0.7, width + 0.01, 24), this.materials.chrome);
-      rim.rotation.z = Math.PI / 2;
-      g.add(tire, rim);
-      return g;
-    };
+    const engine = new T.Mesh(new T.BoxGeometry(0.75, 0.45, 0.75), this.materials.engineBlock);
+    engine.position.set(0, 0.75, -1.3);
+    this.parts.engine.group.add(engine);
 
-    if (this.parts.wheelFL) this.parts.wheelFL.group.add(buildW());
-    if (this.parts.wheelFR) this.parts.wheelFR.group.add(buildW());
-    if (this.parts.wheelRL) this.parts.wheelRL.group.add(buildW());
-    if (this.parts.wheelRR) this.parts.wheelRR.group.add(buildW());
-  }
-
-  buildSingleWheel(T, radius = 0.36, width = 0.16) {
-    const g = new T.Group();
-    const tire = new T.Mesh(new T.CylinderGeometry(radius, radius, width, 28), this.materials.tireRubber);
-    tire.rotation.z = Math.PI / 2;
-    const rim = new T.Mesh(new T.CylinderGeometry(radius * 0.7, radius * 0.7, width + 0.01, 20), this.materials.chrome);
-    rim.rotation.z = Math.PI / 2;
-    g.add(tire, rim);
-    return g;
+    // Interior & Wheels
+    this.parts.interior.group.add(this.buildInteriorCabin(T, 'sedan'));
+    this.parts.wheelFL.group.add(this.buildRealisticWheel(T, 0.4, 0.24));
+    this.parts.wheelFR.group.add(this.buildRealisticWheel(T, 0.4, 0.24));
+    this.parts.wheelRL.group.add(this.buildRealisticWheel(T, 0.4, 0.24));
+    this.parts.wheelRR.group.add(this.buildRealisticWheel(T, 0.4, 0.24));
   }
 
   // ========================================================
@@ -728,22 +1006,35 @@ class Huranow3DStudio {
 
     const defsMap = {
       real_ferrari: [
-        { id: 'engine', title: '4.0L TWIN-TURBO V8 + 3 E-MOTORS', subtitle: '986 HP · 0-100 in 2.5s', desc: 'Ferrari hybrid hypercar powertrain with RAC-e electric front axle torque vectoring.', badge: 'FERRARI HYBRID', pos: [0, 1.8, -0.6] },
-        { id: 'cockpit', title: 'FERRARI HUMAN-MACHINE COCKPIT', subtitle: 'Curved 16" Digital Cluster', desc: 'Touch-sensitive steering wheel with Manettino drive mode switch and head-up display.', badge: 'COCKPIT', pos: [-0.38, 1.8, 0.2] },
-        { id: 'brakes', title: 'BREMBO CARBON-CERAMIC BRAKES', subtitle: 'Brake-by-Wire Technology', desc: 'Integrated brake regeneration seamlessly blends mechanical stopping with kinetic recovery.', badge: 'BRAKES', pos: [-1.4, 0.8, 1.3] },
-        { id: 'aero', title: 'SHUT-OFF GURNEY ACTIVE WING', subtitle: '390 kg Downforce at 250 km/h', desc: 'Patented active aerodynamic system modulates air flow over the rear engine decklid.', badge: 'AERODYNAMICS', pos: [0, 1.6, -1.8] }
+        { id: 'engine', title: '4.0L TWIN-TURBO V8 + 3 E-MOTORS', subtitle: '986 HP · 0-100 in 2.5s', desc: 'Ferrari hybrid hypercar powertrain with RAC-e electric front axle torque vectoring.', badge: 'FERRARI HYBRID', pos: [0, 1.6, 0.8] },
+        { id: 'cockpit', title: 'FERRARI HUMAN-MACHINE COCKPIT', subtitle: 'Curved 16" Digital Cluster', desc: 'Touch-sensitive steering wheel with Manettino drive mode switch and head-up display.', badge: 'COCKPIT', pos: [-0.48, 1.6, -0.2] },
+        { id: 'brakes', title: 'BREMBO CARBON-CERAMIC BRAKES', subtitle: 'Brake-by-Wire Technology', desc: 'Integrated brake regeneration seamlessly blends mechanical stopping with kinetic recovery.', badge: 'BRAKES', pos: [-1.4, 0.8, -1.4] },
+        { id: 'aero', title: 'SHUT-OFF GURNEY ACTIVE WING', subtitle: '390 kg Downforce at 250 km/h', desc: 'Patented active aerodynamic system modulates air flow over the rear engine decklid.', badge: 'AERODYNAMICS', pos: [0, 1.5, 1.8] }
+      ],
+      suv: [
+        { id: 'engine', title: '2.8L D-4D TURBO DIESEL', subtitle: '500 Nm Torque · Dual 150L Tanks', desc: 'Bulletproof Toyota diesel powertrain engineered for East African hills and long journeys.', badge: 'POWERTRAIN', pos: [0, 1.8, -1.3] },
+        { id: '4x4', title: 'FULL-TIME 4WD & DUAL LOCKERS', subtitle: 'Active Traction Control (A-TRC)', desc: 'Conquers the mud and steep volcanic terrain of Musanze and Nyungwe Forest.', badge: '4X4 SYSTEM', pos: [-1.4, 0.8, -1.4] },
+        { id: 'cabin', title: '7-PASSENGER LUXURY CABIN', subtitle: 'Dual AC & Refrigerator Coolbox', desc: 'Spacious 3-row interior with center console coolbox to keep drinks cold across Rwanda.', badge: '7-SEATER', pos: [0, 2.1, 0.4] }
       ],
       heavy_truck: [
-        { id: 'engine', title: '16.4L V8 TURBO DIESEL', subtitle: '770 HP · 3,700 Nm Torque', desc: 'King of the Road powertrain engineered for 150-tonne heavy hauling and cross-continental freight.', badge: 'POWERTRAIN', pos: [0, 2.2, 0.7] },
-        { id: 'cab', title: 'HIGHLINE SLEEPER CABIN', subtitle: 'Pneumatic 4-Point Air Suspension', desc: 'Luxury driver cockpit with sleeper bunk, refrigerator, and panoramic highway visibility.', badge: 'CABIN', pos: [-0.65, 3.2, 0.6] }
+        { id: 'engine', title: '9.7L STEYR WD615 HEAVY TURBO', subtitle: '371 HP · 1,500 Nm Torque', desc: 'Steyr-engineered heavy diesel engine powering African mining, quarrying, and highway transit.', badge: 'HEAVY DIESEL', pos: [0, 2.1, -0.8] },
+        { id: 'tipper', title: '20m³ REINFORCED TIPPER BODY', subtitle: '25-Tonne Payload Capacity', desc: 'Heavy front hydraulic cylinder elevates the dump bed for swift cargo unloading.', badge: 'HYDRAULIC BED', pos: [0, 2.8, 1.2] },
+        { id: 'cab', title: 'HIGH-VISIBILITY SLEEPER CAB', subtitle: 'Pneumatic Air Seat & Bunk', desc: 'Elevated trucker workstation with dual air brake dials and highway visibility.', badge: 'TRUCKER CAB', pos: [-0.65, 3.1, -1.2] }
+      ],
+      truck: [
+        { id: 'engine', title: '2.4L GD-6 HIGH TORQUE', subtitle: '150 HP · 400 Nm Torque', desc: 'Renowned Toyota Hilux engine known worldwide for unbreakable durability.', badge: 'GD-6 DIESEL', pos: [0, 1.7, -1.3] },
+        { id: 'bed', title: '1-TONNE HEAVY CARGO BED', subtitle: 'Reinforced Sports Roll Bar', desc: 'Carries heavy agricultural produce, construction supplies, and equipment anywhere.', badge: 'PAYLOAD', pos: [0, 1.7, 1.4] }
       ],
       motorcycle: [
-        { id: 'engine', title: 'DESMOSEDICI STRADALE V4', subtitle: '215 HP · 14,500 RPM Redline', desc: 'Direct MotoGP counter-rotating crankshaft engine with twin-pulse firing order.', badge: 'ENGINE', pos: [0, 1.8, 0.1] },
-        { id: 'aero', title: 'AERODYNAMIC CARBON WINGS', subtitle: '37 kg Downforce at 300 km/h', desc: 'Double-profile carbon winglets provide extreme front-end stability under braking.', badge: 'AERO', pos: [0, 1.8, 1.2] }
+        { id: 'engine', title: '150cc 4-STROKE AIR-COOLED', subtitle: ' Indestructible East African Hero', desc: 'Runs over 50 km per liter of petrol with ultra-cheap maintenance and parts anywhere.', badge: 'MOTO-TAXI', pos: [0, 1.4, 0] },
+        { id: 'sns', title: 'DUAL SPRING-IN-SPRING (SNS)', subtitle: 'Heavy Passenger & Cargo Shocks', desc: 'Patented twin rear shock absorbers engineered to carry heavy loads smoothly over Kigali hills.', badge: 'SNS SUSPENSION', pos: [0.35, 0.8, 0.9] }
+      ],
+      van: [
+        { id: 'capacity', title: '15-PASSENGER TRANSIT CABIN', subtitle: 'Rwanda Commuter Standard', desc: 'The national standard for reliable passenger transport across all 30 districts of Rwanda.', badge: 'TWEGERANE', pos: [0, 2.3, 0.4] }
       ]
     };
 
-    const defs = defsMap[type] || defsMap.real_ferrari;
+    const defs = defsMap[type] || defsMap.suv;
 
     this.hotspotElements = defs.map(def => {
       const el = document.createElement('div');
@@ -801,70 +1092,38 @@ class Huranow3DStudio {
         return;
       }
 
-      el.style.display = 'block';
       const x = (v.x * 0.5 + 0.5) * width;
-      const y = (-v.y * 0.5 + 0.5) * height;
-      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      const y = (-(v.y * 0.5) + 0.5) * height;
+
+      el.style.display = 'block';
+      el.style.transform = `translate(${x}px, ${y}px)`;
     });
   }
 
   // ========================================================
-  // LOAD SPECIFIC VEHICLE CONFIG FROM STORE
+  // VIEW MODES & INTERACTIVE CONTROLS
   // ========================================================
-  loadVehicleConfig(vehicle) {
-    if (!vehicle) return;
-    this.state.activeVehicle = vehicle;
-    this.state.vehicleTitle = `${vehicle.brand.toUpperCase()} ${vehicle.model.toUpperCase()}`;
+  setViewMode(mode, presetKey = 'driver') {
+    this.state.viewMode = mode;
+    this.state.cockpitPreset = presetKey;
 
-    if (vehicle.paintHex) {
-      this.setPaintColor(vehicle.paintHex);
-    }
-    if (vehicle.interiorHex) {
-      this.setInteriorColor(vehicle.interiorHex);
-    }
-
-    const type = vehicle.model3dType || 'hypercar';
-    if (type === 'hypercar') {
-      this.loadRealCarModel();
+    if (mode === 'outside') {
+      this.camera.fov = 45;
+      this.camera.updateProjectionMatrix();
     } else {
-      this.buildVehicle(type);
-    }
-
-    const titleEl = document.querySelector('.studio-logo-text');
-    if (titleEl) {
-      titleEl.textContent = `HURANOW 3D · ${vehicle.brand} ${vehicle.model}`;
-    }
-  }
-
-  // ========================================================
-  // CONTROLS & EVENT BINDINGS
-  // ========================================================
-  setExplode(explode) {
-    this.state.isExploded = explode;
-    if (explode && this.state.viewMode === 'cockpit') {
-      this.setViewMode('outside');
+      const modelPresets = this.cockpitPresets[this.state.modelType] || this.cockpitPresets.suv;
+      const preset = modelPresets[presetKey] || modelPresets.driver;
+      this.cockpitLook.yaw = preset.yaw;
+      this.cockpitLook.pitch = preset.pitch;
+      this.cockpitLook.fov = preset.fov;
+      this.camera.fov = preset.fov;
+      this.camera.updateProjectionMatrix();
     }
   }
 
   toggleExplode() {
-    this.setExplode(!this.state.isExploded);
+    this.state.isExploded = !this.state.isExploded;
     return this.state.isExploded;
-  }
-
-  setViewMode(mode, cockpitPreset = 'driver') {
-    this.state.viewMode = mode;
-    if (mode === 'cockpit') {
-      this.state.cockpitPreset = cockpitPreset;
-      this.state.autoRotate = false;
-      this.state.isExploded = false;
-
-      const modelPresets = this.cockpitPresets[this.state.modelType] || this.cockpitPresets.real_ferrari;
-      const preset = modelPresets[cockpitPreset] || modelPresets.driver;
-
-      this.cockpitLook.yaw = preset.yaw;
-      this.cockpitLook.pitch = preset.pitch;
-      this.cockpitLook.fov = preset.fov;
-    }
   }
 
   setPaintColor(hex) {
@@ -884,6 +1143,33 @@ class Huranow3DStudio {
     }
     if (this.materials && this.materials.interior) {
       this.materials.interior.color.set(hex);
+    }
+  }
+
+  setWheelStyle(style) {
+    this.state.wheelStyle = style;
+    const rimColor = style === 'sport' ? 0x111114 : (style === 'classic' ? 0xe5e7eb : 0xc89528);
+    if (this.realMaterials && this.realMaterials.rims) {
+      this.realMaterials.rims.color.set(rimColor);
+    }
+    if (this.materials && this.materials.chrome) {
+      this.materials.chrome.color.set(rimColor);
+    }
+  }
+
+  loadVehicleConfig(vehicle) {
+    if (!vehicle) return;
+    this.state.activeVehicle = vehicle;
+    if (vehicle.paintHex) {
+      this.setPaintColor(vehicle.paintHex);
+    }
+    if (vehicle.interiorHex) {
+      this.setInteriorColor(vehicle.interiorHex);
+    }
+    this.buildVehicle(vehicle.model3dType || 'suv');
+    const titleEl = document.querySelector('.studio-logo-text');
+    if (titleEl) {
+      titleEl.textContent = `HURANOW 3D · ${vehicle.brand.toUpperCase()} ${vehicle.model.toUpperCase()}`;
     }
   }
 
@@ -1016,7 +1302,7 @@ class Huranow3DStudio {
       targetFov = 45;
     } else {
       // Inside Cockpit
-      const modelPresets = this.cockpitPresets[this.state.modelType] || this.cockpitPresets.real_ferrari;
+      const modelPresets = this.cockpitPresets[this.state.modelType] || this.cockpitPresets.suv;
       const preset = modelPresets[this.state.cockpitPreset] || modelPresets.driver;
       targetPos.set(preset.pos[0], preset.pos[1], preset.pos[2]);
 
@@ -1032,7 +1318,7 @@ class Huranow3DStudio {
     this.camera.updateProjectionMatrix();
 
     if (this.cabinLight) {
-      const targetCabinLight = this.state.viewMode === 'cockpit' ? 1.6 : 0.45;
+      const targetCabinLight = this.state.viewMode === 'cockpit' ? 1.6 : 0.6;
       this.cabinLight.intensity += (targetCabinLight - this.cabinLight.intensity) * smoothK;
     }
 

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>HURANOW MOTORS – Buy, Rent, Sell Any Vehicle & 3D Studio</title>
+  <meta name="description" content="The premier automotive marketplace. Buy, rent, and sell brand new and pre-owned supercars, luxury SUVs, electric vehicles, and bikes. Interactive 3D cockpit studio with parts scramble.">
+
+  <!-- Google Fonts: Barlow Condensed & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/viewer3d.css">
+</head>
+<body>
+
+  <!-- TOP TICKER ANNOUNCEMENT MARQUEE -->
+  <aside class="ticker-bar" aria-label="Announcements">
+    <div class="ticker-track">
+      <div class="ticker-item"><span class="highlight">FREE 7-DAY HOME TEST DRIVE</span> ON ALL VEHICLES <span class="dot"></span></div>
+      <div class="ticker-item"><span class="highlight">0% FINANCING AVAILABLE</span> FOR HURANOW CLUB MEMBERS <span class="dot"></span></div>
+      <div class="ticker-item">INTERACTIVE 3D COCKPIT & SCRAMBLE STUDIO NOW LIVE <span class="dot"></span></div>
+      <div class="ticker-item">GLOBAL ENCLOSED VEHICLE SHIPPING & REGISTRATION INCLUDED <span class="dot"></span></div>
+      <div class="ticker-item">OFFICIAL DEALERSHIP CERTIFIED 150-POINT INSPECTION GUARANTEE <span class="dot"></span></div>
+      <!-- Duplicate for seamless infinite marquee loop -->
+      <div class="ticker-item"><span class="highlight">FREE 7-DAY HOME TEST DRIVE</span> ON ALL VEHICLES <span class="dot"></span></div>
+      <div class="ticker-item"><span class="highlight">0% FINANCING AVAILABLE</span> FOR HURANOW CLUB MEMBERS <span class="dot"></span></div>
+      <div class="ticker-item">INTERACTIVE 3D COCKPIT & SCRAMBLE STUDIO NOW LIVE <span class="dot"></span></div>
+      <div class="ticker-item">GLOBAL ENCLOSED VEHICLE SHIPPING & REGISTRATION INCLUDED <span class="dot"></span></div>
+      <div class="ticker-item">OFFICIAL DEALERSHIP CERTIFIED 150-POINT INSPECTION GUARANTEE <span class="dot"></span></div>
+    </div>
+  </aside>
+
+  <!-- STICKY MAIN HEADER -->
+  <header class="main-header" id="main-header">
+    <div class="nav-left">
+      <div class="brand-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <div class="brand-badge">H</div>
+        <div class="brand-name">
+          HURANOW <span class="sub">MOTORS</span>
+        </div>
+      </div>
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li class="nav-link active" data-target="all">All Fleet</li>
+          <li class="nav-link" data-target="buy">Buy</li>
+          <li class="nav-link" data-target="rent">Rentals</li>
+          <li class="nav-link" data-target="studio">3D Studio</li>
+          <li class="nav-link" data-target="sell">Sell / Trade-In</li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="nav-right">
+      <!-- Currency Switcher -->
+      <select class="currency-picker" id="currency-select" aria-label="Currency selection">
+        <option value="RWF" selected>🇷🇼 RWF</option>
+        <option value="USD">🇺🇸 USD ($)</option>
+        <option value="EUR">🇪🇺 EUR (€)</option>
+      </select>
+
+      <!-- Wishlist / Dream Garage -->
+      <button class="nav-icon-btn" id="nav-wishlist-btn" title="Saved Garage" aria-label="Saved Garage">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+        </svg>
+        <span class="nav-count-badge" id="nav-wishlist-count" style="display: none;">0</span>
+      </button>
+
+      <!-- Cart / Bookings -->
+      <button class="nav-icon-btn" id="nav-cart-btn" title="Your Cart & Reservations" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="nav-count-badge" id="nav-cart-count" style="display: none;">0</span>
+      </button>
+
+      <!-- User Account -->
+      <button class="user-avatar-btn" id="nav-account-btn" aria-label="Account">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Sign In</span>
+      </button>
+
+      <!-- List Vehicle CTA -->
+      <button class="btn-nike-pill btn-red" id="nav-sell-btn">
+        <span>+ List Vehicle</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION - NIKE EDITORIAL AESTHETIC -->
+  <section class="hero-section" id="hero-section">
+    <div class="hero-overlay-grid"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span>★ 2026 Fleet Collection Now Live</span>
+      </div>
+      <h1 class="hero-title">
+        UNLEASH THE <span class="accent">EXTRAORDINARY.</span>
+      </h1>
+      <p class="hero-description">
+        Buy outright, rent for exhilarating journeys, or list your vehicle in Rwanda & Africa's most elite automotive marketplace. Experience every supercar in authentic interactive 3D with cabin exploration.
+      </p>
+      <div class="hero-cta-row">
+        <a href="#fleet-grid-section" class="btn-hero-primary">
+          Explore All Vehicles
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#section-3d-studio" class="btn-hero-3d">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+          </svg>
+          Launch 3D Cockpit Studio
+        </a>
+      </div>
+
+      <!-- Live Telemetry Strip -->
+      <div class="telemetry-strip">
+        <div class="telemetry-item">
+          <b>180+</b>
+          <span>Vehicles In Stock</span>
+        </div>
+        <div class="telemetry-item">
+          <b>1.99s</b>
+          <span>Fastest 0-100 km/h</span>
+        </div>
+        <div class="telemetry-item">
+          <b>100%</b>
+          <span>Certified Inspection</span>
+        </div>
+        <div class="telemetry-item">
+          <b>0% APR</b>
+          <span>Member Financing</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEDICATED 3D STUDIO SECTION (VIRTUAL COCKPIT & SCRAMBLE ENGINE) -->
+  <section class="studio-featured-section" id="section-3d-studio">
+    <div class="section-head">
+      <div>
+        <span class="section-eyebrow">Real-Time WebGL Engine</span>
+        <h2 class="section-title">3D Cockpit & Scramble Studio</h2>
+      </div>
+      <p class="section-desc">
+        Drag to rotate 360°. Step inside the driver’s cockpit to look around, or click <b>Scramble Parts</b> to watch the aerodynamic chassis, V8 hybrid engine, and carbon doors explode in real-time.
+      </p>
+    </div>
+
+    <!-- 3D Studio Container Box -->
+    <div class="studio-container" id="featured-3d-canvas-container">
+
+      <!-- Top Header HUD Overlay -->
+      <div class="studio-hud-header">
+        <div class="studio-badge-title">
+          <span class="studio-logo-text">HURANOW 3D</span>
+          <span class="studio-live-tag">Interactive Simulation</span>
+        </div>
+        <span class="studio-hint-text">
+          Drag to rotate 360° · Scroll to zoom · Click cockpit views to sit inside
+        </span>
+        <div class="studio-top-actions">
+          <button class="studio-icon-btn active" id="studio-btn-autorotate" title="Toggle Auto-Spin" aria-label="Auto Rotate">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+          </button>
+          <button class="studio-icon-btn active" id="studio-btn-headlights" title="Toggle LED Laser Headlights" aria-label="Headlights">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom HUD Controls -->
+      <div class="studio-hud-bottom">
+        <div class="studio-controls-bar">
+
+          <!-- View Perspectives Group -->
+          <div class="studio-group">
+            <span class="studio-label">Perspective:</span>
+            <div class="studio-pill-group" id="studio-view-pills">
+              <button class="studio-pill-btn active" data-view="outside">Outside 360°</button>
+              <button class="studio-pill-btn" data-view="driver">Driver Seat</button>
+              <button class="studio-pill-btn" data-view="dash">Cockpit Dash</button>
+              <button class="studio-pill-btn" data-view="passenger">Passenger</button>
+              <button class="studio-pill-btn" data-view="rear">Rear Cabin</button>
+            </div>
+          </div>
+
+          <!-- Explode / Scramble Button -->
+          <button class="studio-scramble-btn" id="studio-btn-scramble">
+            💥 Scramble / Explode Parts
+          </button>
+
+          <!-- Vehicle Model Selector -->
+          <div class="studio-group">
+            <span class="studio-label">Model:</span>
+            <div class="studio-pill-group" id="studio-model-selector">
+              <button class="studio-pill-btn active" data-model="hypercar">Apex Hypercar GT</button>
+              <button class="studio-pill-btn" data-model="suv">Titan Cyber SUV</button>
+            </div>
+          </div>
+
+          <!-- Paint Color Swatches -->
+          <div class="studio-group">
+            <span class="studio-label">Paint:</span>
+            <div class="studio-swatch-list">
+              <button class="studio-swatch swatch-paint active" style="background: #d4162f;" data-color="#d4162f" title="Apex Red"></button>
+              <button class="studio-swatch swatch-paint" style="background: #f1f1ee;" data-color="#f1f1ee" title="Frozen Pearl White"></button>
+              <button class="studio-swatch swatch-paint" style="background: #111215;" data-color="#111215" title="Stealth Obsidian Black"></button>
+              <button class="studio-swatch swatch-paint" style="background: #00d4ff;" data-color="#00d4ff" title="Miami Cyber Cyan"></button>
+              <button class="studio-swatch swatch-paint" style="background: #a4ef00;" data-color="#a4ef00" title="Acid Lime"></button>
+              <button class="studio-swatch swatch-paint" style="background: #7d828a;" data-color="#7d828a" title="Nardo Grey"></button>
+              <button class="studio-swatch swatch-paint" style="background: #c89528;" data-color="#c89528" title="Sunburst Gold"></button>
+            </div>
+          </div>
+
+          <!-- Interior Leather Swatches -->
+          <div class="studio-group">
+            <span class="studio-label">Interior:</span>
+            <div class="studio-swatch-list">
+              <button class="studio-swatch swatch-interior active" style="background: #1d1d20;" data-color="#1d1d20" title="Onyx Black Leather"></button>
+              <button class="studio-swatch swatch-interior" style="background: #c99c68;" data-color="#c99c68" title="Cognac Tan Leather"></button>
+              <button class="studio-swatch swatch-interior" style="background: #8b1220;" data-color="#8b1220" title="Crimson Racing Red"></button>
+            </div>
+          </div>
+
+          <!-- Wheel Styles -->
+          <div class="studio-group">
+            <span class="studio-label">Wheels:</span>
+            <div class="studio-pill-group" id="studio-wheels">
+              <button class="studio-pill-btn active" data-wheel="sport">Sport</button>
+              <button class="studio-pill-btn" data-wheel="classic">Classic</button>
+              <button class="studio-pill-btn" data-wheel="aero">Turbine Aero</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STICKY FILTER & SEARCH CONTROLS -->
+  <section class="filter-sticky-bar" id="filter-sticky-bar">
+    <!-- Main Mode Tabs -->
+    <div class="filter-main-tabs" role="tablist">
+      <button class="tab-btn active" data-mode="all">All Fleet</button>
+      <button class="tab-btn" data-mode="buy">Buy (New & Pre-Owned)</button>
+      <button class="tab-btn" data-mode="rent">Exotic & Daily Rentals</button>
+      <button class="tab-btn" data-mode="new">Brand New (2026)</button>
+      <button class="tab-btn" data-mode="used">Certified Pre-Owned</button>
+    </div>
+
+    <!-- Secondary Filter Row -->
+    <div class="filter-row-secondary">
+      <!-- Category Chips Scroll -->
+      <div class="filter-chips-scroll">
+        <button class="chip-btn active" data-category="all">All Vehicles</button>
+        <button class="chip-btn" data-category="supercar">Supercars & Hypercars</button>
+        <button class="chip-btn" data-category="suv">Luxury SUVs & 4x4</button>
+        <button class="chip-btn" data-category="electric">Electric & Hybrids</button>
+        <button class="chip-btn" data-category="sedan">Performance Sedans</button>
+        <button class="chip-btn" data-category="truck">Pickups & Trucks</button>
+        <button class="chip-btn" data-category="van">VIP Vans & Shuttles</button>
+        <button class="chip-btn" data-category="motorcycle">Superbikes & Scooters</button>
+        <button class="chip-btn" data-category="bicycle">Carbon Bicycles</button>
+      </div>
+
+      <!-- Search & Sort Inputs -->
+      <div class="filter-inputs-group">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search-input" placeholder="Search by model, brand, power..." aria-label="Search vehicles">
+        </div>
+        <select class="filter-select" id="sort-select" aria-label="Sort vehicles">
+          <option value="featured">Featured First</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="power">Highest Horsepower</option>
+          <option value="year">Newest Model Year</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN VEHICLE FLEET PRODUCT GRID -->
+  <main class="fleet-grid-section" id="fleet-grid-section">
+    <div class="fleet-grid" id="fleet-grid">
+      <!-- Dynamically populated via data.js and app.js -->
+    </div>
+  </main>
+
+  <!-- VEHICLE DETAIL & BOOKING MODAL -->
+  <div class="modal-backdrop" id="modal-detail">
+    <div class="detail-sheet" id="detail-sheet-content">
+      <!-- Dynamic detail content injected here -->
+    </div>
+  </div>
+
+  <!-- NIKE-STYLE SPLIT DIAGONAL AUTH MODAL -->
+  <div class="modal-backdrop" id="modal-auth">
+    <div class="auth-split-card" id="auth-split-card" data-mode="signup">
+      <button class="modal-close-btn" data-close-modal aria-label="Close">✕</button>
+
+      <!-- Diagonal sliding branding overlay -->
+      <div class="auth-overlay-panel">
+        <h2>JOIN HURANOW MOTORS</h2>
+        <p>
+          Unlock member-exclusive allocations, 0% financing, free home test drives, and save your private dream garage.
+        </p>
+        <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.85;">
+          Official Automotive Portal
+        </div>
+      </div>
+
+      <!-- Sign Up Form Panel -->
+      <div class="auth-form-container signup-form">
+        <h3 class="auth-form-title">Create Account</h3>
+        <form id="form-signup">
+          <div class="form-group">
+            <input class="form-input" name="name" placeholder="Full Name or Collector ID" required minlength="2">
+          </div>
+          <div class="form-group">
+            <input class="form-input" name="email" type="email" placeholder="Email Address" required>
+          </div>
+          <div class="form-group">
+            <input class="form-input" name="password" type="password" placeholder="Password (6+ characters)" required minlength="6">
+          </div>
+          <button class="btn-nike-pill btn-red" type="submit" style="width: 100%; height: 44px; justify-content: center; margin-top: 8px;">
+            Join Huranow Club
+          </button>
+          <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 14px;">
+            Already a member? <a href="javascript:void(0)" data-auth-go="login" style="color: var(--red); font-weight: 700;">Sign In</a>
+          </p>
+        </form>
+      </div>
+
+      <!-- Log In Form Panel -->
+      <div class="auth-form-container login-form">
+        <h3 class="auth-form-title">Welcome Back</h3>
+        <form id="form-login">
+          <div class="form-group">
+            <input class="form-input" name="email" type="email" placeholder="Email or Username" required>
+          </div>
+          <div class="form-group">
+            <input class="form-input" name="password" type="password" placeholder="Password" required>
+          </div>
+          <button class="btn-nike-pill btn-red" type="submit" style="width: 100%; height: 44px; justify-content: center; margin-top: 8px;">
+            Sign In to Garage
+          </button>
+          <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 14px;">
+            New to Huranow? <a href="javascript:void(0)" data-auth-go="signup" style="color: var(--red); font-weight: 700;">Create Account</a>
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SELL / LIST A VEHICLE MODAL -->
+  <div class="modal-backdrop" id="modal-sell">
+    <div class="detail-sheet" style="max-width: 640px;">
+      <button class="modal-close-btn" data-close-modal aria-label="Close">✕</button>
+      <h2 style="font-family: var(--font-display); font-size: 32px; font-weight: 900; text-transform: uppercase;">
+        List Your Vehicle
+      </h2>
+      <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 18px;">
+        Publish your car, SUV, truck, or bike for sale, rent, or both. Your listing appears live across the Huranow network instantly.
+      </p>
+
+      <form id="form-sell-vehicle">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <input class="form-input" name="brand" placeholder="Brand (e.g. Porsche, Tesla, Toyota)" required>
+          <input class="form-input" name="model" placeholder="Model Name (e.g. 911 Turbo S)" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <select class="form-input" name="category" aria-label="Category">
+            <option value="supercar">Supercars & Hypercars</option>
+            <option value="suv">Luxury SUVs & 4x4</option>
+            <option value="electric">Electric & Hybrids</option>
+            <option value="sedan">Performance Sedans</option>
+            <option value="truck">Pickups & Trucks</option>
+            <option value="van">VIP Vans & Shuttles</option>
+            <option value="motorcycle">Superbikes & Scooters</option>
+            <option value="bicycle">Carbon Bicycles</option>
+          </select>
+          <select class="form-input" name="condition" aria-label="Condition">
+            <option value="Brand New">Brand New (2026)</option>
+            <option value="Certified Pre-Owned">Certified Pre-Owned</option>
+            <option value="Used">Used / Classic</option>
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <input class="form-input" name="year" type="number" min="1970" max="2027" placeholder="Model Year (e.g. 2026)" value="2026" required>
+          <input class="form-input" name="mileage" type="number" min="0" placeholder="Mileage (km)">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <input class="form-input" name="price" type="number" min="0" placeholder="Sale Price in RWF (Optional)">
+          <input class="form-input" name="rentDaily" type="number" min="0" placeholder="Daily Rent in RWF (Optional)">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <input class="form-input" name="powerHp" type="number" placeholder="Horsepower (HP)" value="520">
+          <input class="form-input" name="accel0to100" placeholder="0-100 km/h (e.g. 3.2s)" value="3.2s">
+          <input class="form-input" name="topSpeed" placeholder="Top Speed (e.g. 310 km/h)" value="310 km/h">
+        </div>
+
+        <div class="form-group">
+          <input class="form-input" name="dealership" placeholder="Company, Dealership, or Seller Name (e.g. Kigali Vault)">
+        </div>
+
+        <div class="form-group">
+          <input class="form-input" name="imageUrl" placeholder="Public Image URL (Leave blank for default high-res supercar photo)">
+        </div>
+
+        <div class="form-group">
+          <textarea class="form-input" name="description" rows="3" placeholder="Detailed vehicle specifications, options package, maintenance history..." style="height: auto; padding: 10px;"></textarea>
+        </div>
+
+        <button class="btn-nike-pill btn-red" type="submit" style="width: 100%; height: 46px; justify-content: center; font-size: 15px;">
+          Publish Vehicle to Marketplace
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-backdrop" id="modal-checkout">
+    <div class="checkout-sheet" id="checkout-sheet-content">
+      <!-- Injected by app.js -->
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER CART DRAWER -->
+  <aside class="drawer-container" id="drawer-cart" aria-label="Shopping Cart">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Your Cart</h3>
+      <button class="modal-close-btn" data-close-modal style="position: static;" aria-label="Close">✕</button>
+    </div>
+    <div class="drawer-items-list" id="drawer-cart-items">
+      <!-- Items dynamically populated -->
+    </div>
+    <div class="drawer-summary" id="drawer-cart-summary">
+      <!-- Summary rows -->
+    </div>
+    <button class="btn-nike-pill btn-red" id="btn-drawer-checkout" style="width: 100%; height: 48px; justify-content: center; margin-top: 14px;">
+      Proceed to Allocation & Checkout
+    </button>
+  </aside>
+
+  <!-- SLIDE-OVER WISHLIST (DREAM GARAGE) DRAWER -->
+  <aside class="drawer-container" id="drawer-wishlist" aria-label="Saved Garage">
+    <div class="drawer-header">
+      <h3 class="drawer-title">Dream Garage</h3>
+      <button class="modal-close-btn" data-close-modal style="position: static;" aria-label="Close">✕</button>
+    </div>
+    <div class="drawer-items-list" id="drawer-wishlist-items">
+      <!-- Saved cars dynamically populated -->
+    </div>
+  </aside>
+
+  <!-- GLOBAL TOAST NOTIFICATION -->
+  <div class="toast-notice" id="global-toast" role="status"></div>
+
+  <!-- FOOTER - NIKE STYLE EDITORIAL -->
+  <footer class="main-footer">
+    <div class="footer-top">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 16px;">
+          <div class="brand-badge">H</div>
+          <div class="brand-name">HURANOW <span class="sub">MOTORS</span></div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 13px; max-width: 320px; line-height: 1.6;">
+          Africa's premier automotive destination. Uncompromising performance, certified pre-owned heritage, instant exotic rentals, and cutting-edge 3D vehicle configurators.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Showroom Hubs</h4>
+        <ul class="footer-links">
+          <li><a href="#">Kigali Financial District, Rwanda</a></li>
+          <li><a href="#">Westlands Prime, Nairobi</a></li>
+          <li><a href="#">Business Bay Supercar Vault, Dubai</a></li>
+          <li><a href="#">Mayfair Prestige Pavilion, London</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Marketplace</h4>
+        <ul class="footer-links">
+          <li><a href="#fleet-grid-section">Hypercars & Supercars</a></li>
+          <li><a href="#fleet-grid-section">Luxury SUVs & 4x4</a></li>
+          <li><a href="#fleet-grid-section">Zero-Emission Electric Fleet</a></li>
+          <li><a href="#section-3d-studio">Interactive 3D Studio</a></li>
+          <li><a href="javascript:void(0)" onclick="document.getElementById('nav-sell-btn').click()">List a Vehicle</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Client Services</h4>
+        <ul class="footer-links">
+          <li><a href="#">Enclosed Door-to-Door Delivery</a></li>
+          <li><a href="#">150-Point Certificate of Inspection</a></li>
+          <li><a href="#">0% Financing & Trade-In Appraisals</a></li>
+          <li><a href="#">24/7 Roadside VIP Concierge</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 HURANOW MOTORS INC. ALL RIGHTS RESERVED.</div>
+      <div>PRIVACY POLICY · TERMS OF SALE & RENTAL · GLOBAL REGISTRATION</div>
+    </div>
+  </footer>
+
+  <!-- External Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Application Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/three-engine.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

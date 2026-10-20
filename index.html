@@ -174,6 +174,21 @@
           Drag to rotate 360° · Scroll to zoom · Click cockpit views to sit inside
         </span>
         <div class="studio-top-actions">
+          <button class="studio-icon-btn" id="studio-btn-zoomin" title="Zoom In (+)" aria-label="Zoom In">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="11" y1="8" x2="11" y2="14"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </button>
+          <button class="studio-icon-btn" id="studio-btn-zoomout" title="Zoom Out (-)" aria-label="Zoom Out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+          </button>
           <button class="studio-icon-btn active" id="studio-btn-autorotate" title="Toggle Auto-Spin" aria-label="Auto Rotate">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
@@ -218,8 +233,12 @@
           <div class="studio-group">
             <span class="studio-label">Model:</span>
             <div class="studio-pill-group" id="studio-model-selector">
-              <button class="studio-pill-btn active" data-model="hypercar">Apex Hypercar GT</button>
-              <button class="studio-pill-btn" data-model="suv">Titan Cyber SUV</button>
+              <button class="studio-pill-btn active" data-model="real_ferrari">Real Ferrari SF90</button>
+              <button class="studio-pill-btn" data-model="suv">Toyota Prado / SUV</button>
+              <button class="studio-pill-btn" data-model="heavy_truck">HOWO Semi-Hauler</button>
+              <button class="studio-pill-btn" data-model="truck">Hilux Pickup</button>
+              <button class="studio-pill-btn" data-model="sedan">Executive Sedan</button>
+              <button class="studio-pill-btn" data-model="motorcycle">Superbike / Moto</button>
             </div>
           </div>
 
@@ -268,6 +287,7 @@
     <!-- Main Mode Tabs -->
     <div class="filter-main-tabs" role="tablist">
       <button class="tab-btn active" data-mode="all">All Fleet</button>
+      <button class="tab-btn" data-mode="africa">🇷🇼 African Favorites & Affordable</button>
       <button class="tab-btn" data-mode="buy">Buy (New & Pre-Owned)</button>
       <button class="tab-btn" data-mode="rent">Exotic & Daily Rentals</button>
       <button class="tab-btn" data-mode="new">Brand New (2026)</button>
@@ -279,13 +299,14 @@
       <!-- Category Chips Scroll -->
       <div class="filter-chips-scroll">
         <button class="chip-btn active" data-category="all">All Vehicles</button>
+        <button class="chip-btn" data-category="africa">🇷🇼 African Favorites</button>
+        <button class="chip-btn" data-category="suv">Toyota Prado & SUVs</button>
+        <button class="chip-btn" data-category="sedan">Corolla, Yaris & Sedans</button>
+        <button class="chip-btn" data-category="truck">Hilux, HOWO & Trucks</button>
+        <button class="chip-btn" data-category="van">Twegerane Minibuses & Vans</button>
+        <button class="chip-btn" data-category="motorcycle">Boxer Moto-Taxis & Bikes</button>
         <button class="chip-btn" data-category="supercar">Supercars & Hypercars</button>
-        <button class="chip-btn" data-category="suv">Luxury SUVs & 4x4</button>
-        <button class="chip-btn" data-category="electric">Electric & Hybrids</button>
-        <button class="chip-btn" data-category="sedan">Performance Sedans</button>
-        <button class="chip-btn" data-category="truck">Pickups & Trucks</button>
-        <button class="chip-btn" data-category="van">VIP Vans & Shuttles</button>
-        <button class="chip-btn" data-category="motorcycle">Superbikes & Scooters</button>
+        <button class="chip-btn" data-category="electric">Electric & Clean Tech</button>
         <button class="chip-btn" data-category="bicycle">Carbon Bicycles</button>
       </div>
 
@@ -542,8 +563,10 @@
     </div>
   </footer>
 
-  <!-- External Three.js Library -->
+  <!-- External Three.js Library & GLTF / Draco Loaders -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script src="js/DRACOLoader.js"></script>
 
   <!-- Application Modules -->
   <script src="js/data.js"></script>

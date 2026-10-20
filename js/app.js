@@ -106,13 +106,15 @@
 
     return allVehicles.filter(v => {
       // Main mode filter
+      if (AppState.mode === 'africa' && !v.isAfricanAffordable) return false;
       if (AppState.mode === 'buy' && !v.price) return false;
       if (AppState.mode === 'rent' && !v.rentDaily) return false;
       if (AppState.mode === 'new' && v.condition !== 'Brand New') return false;
       if (AppState.mode === 'used' && v.condition === 'Brand New') return false;
 
       // Category filter
-      if (AppState.category !== 'all' && v.category !== AppState.category) return false;
+      if (AppState.category === 'africa' && !v.isAfricanAffordable) return false;
+      if (AppState.category !== 'all' && AppState.category !== 'africa' && v.category !== AppState.category) return false;
 
       // Condition filter
       if (AppState.condition !== 'all' && v.condition !== AppState.condition) return false;
@@ -1052,15 +1054,20 @@
         btnAutoRotate.classList.toggle('active', on);
       };
     }
+
+    // Zoom In & Zoom Out HUD Buttons
+    $('#studio-btn-zoomin')?.addEventListener('click', () => {
+      AppState.studioInstance?.zoom(-0.8);
+    });
+    $('#studio-btn-zoomout')?.addEventListener('click', () => {
+      AppState.studioInstance?.zoom(0.8);
+    });
   }
 
-  function scrollTo3DStudio(modelType = 'hypercar') {
+  function scrollTo3DStudio(modelType = 'real_ferrari') {
     const section = $('#section-3d-studio');
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
-      if (AppState.studioInstance) {
-        AppState.studioInstance.buildVehicle(modelType);
-      }
     }
   }
 
@@ -1170,7 +1177,10 @@
       const launch3DBtn = e.target.closest('[data-launch-3d]');
       if (launch3DBtn) {
         const v = getVehicleById(launch3DBtn.dataset.launch3d);
-        scrollTo3DStudio(v ? v.model3dType : 'hypercar');
+        if (v && AppState.studioInstance) {
+          AppState.studioInstance.loadVehicleConfig(v);
+        }
+        scrollTo3DStudio(v ? v.model3dType : 'real_ferrari');
         return;
       }
 

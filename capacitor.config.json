@@ -1,9 +1,5 @@
 {
   "appId": "com.huranow.motors",
   "appName": "Huranow Motors",
-  "webDir": "dist",
-  "server": {
-    "url": "https://huranow.vercel.app/",
-    "cleartext": true
-  }
+  "webDir": "dist"
 }

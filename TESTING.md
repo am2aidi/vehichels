@@ -14,7 +14,7 @@ Your web app is configured as a Progressive Web App (PWA) with the official oran
    - Tap **Delete Bookmark** (or **Remove App**) -> **Delete**.
 2. **Open in Safari:**
    - Open **Safari** on your iPhone.
-   - Go to: [https://huranow.vercel.app/](https://huranow.vercel.app/)
+   - Go to your Huranow Motors site URL (or your Vercel deployment URL for `am2aidi/vehichels`).
 3. **Add to Home Screen:**
    - Tap the **Share** button at the bottom (the square icon with an arrow pointing up).
    - Scroll down and tap **Add to Home Screen**.
@@ -75,5 +75,4 @@ git add .
 git commit -m "Update PWA with official orange Huranow logo, Tauri v2 desktop, and Capacitor Android"
 git push origin main
 ```
-Vercel will automatically build and deploy within 1–2 minutes at:
-**https://huranow.vercel.app/**
+Vercel will automatically build and deploy within 1–2 minutes on your connected domain for this repository.

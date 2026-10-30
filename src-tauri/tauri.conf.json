@@ -1,18 +1,17 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "huranow",
+  "productName": "huranow-motors",
   "version": "1.0.0",
-  "identifier": "com.huranow.app",
+  "identifier": "com.huranow.motors",
   "build": {
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "node scripts/build.js",
     "frontendDist": "../dist"
   },
   "app": {
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "huranow",
-        "url": "https://huranow.vercel.app/",
+        "title": "HURANOW MOTORS",
         "width": 1280,
         "height": 840,
         "minWidth": 800,

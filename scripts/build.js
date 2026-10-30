@@ -29,7 +29,7 @@ function copyRecursiveSync(src, dest) {
 }
 
 // Files to copy
-const filesToCopy = ['index.html', 'manifest.json', 'sw.js'];
+const filesToCopy = ['index.html', 'manifest.json', 'sw.js', 'favicon.ico', 'favicon.svg', 'apple-touch-icon.png'];
 filesToCopy.forEach((file) => {
   const srcPath = path.join(rootDir, file);
   if (fs.existsSync(srcPath)) {
@@ -38,7 +38,7 @@ filesToCopy.forEach((file) => {
 });
 
 // Directories to copy
-const dirsToCopy = ['css', 'js', 'assets'];
+const dirsToCopy = ['css', 'js', 'assets', 'public', 'icons'];
 dirsToCopy.forEach((dir) => {
   const srcPath = path.join(rootDir, dir);
   if (fs.existsSync(srcPath)) {

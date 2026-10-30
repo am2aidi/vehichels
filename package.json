@@ -1,0 +1,21 @@
+{
+  "name": "huranow-motors",
+  "version": "1.0.0",
+  "description": "HURANOW MOTORS – Automotive Marketplace & 3D Studio",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "build:desktop": "node scripts/build.js && tauri build",
+    "build:android": "node scripts/build.js && npx cap sync android",
+    "desktop:dev": "tauri dev",
+    "serve": "npx serve ."
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.2.0"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.2.0",
+    "@capacitor/cli": "^6.2.0",
+    "@tauri-apps/cli": "^2.12.4"
+  }
+}

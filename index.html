@@ -11,6 +11,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="theme-color" content="#09090b">
+  <meta name="color-scheme" content="dark">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="public/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="public/icons/favicon-16x16.png">
+  <link rel="shortcut icon" href="public/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="public/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="huranow">
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/viewer3d.css">
@@ -600,5 +613,15 @@
   <script src="js/three-engine.js"></script>
   <script src="js/app.js"></script>
 
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
+          .catch((err) => console.warn('[PWA] Registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>
